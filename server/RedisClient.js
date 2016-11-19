@@ -34,11 +34,11 @@ class RedisClient {
     this.dbclient.lrange(listId, 0, -1, callback)
   }
 
-  /* nameList(string listId, string newName, function callback)
+  /* renameList(string listId, string newName, function callback)
     renames the list by setting the zeroth value
     callback is a function that takes in a simpleString (usually 'ok')
   */
-  nameList(listId, newName, callback) {
+  renameList(listId, newName, callback) {
     this.dbclient.lset(listId, 0, newName, callback);
   }
 

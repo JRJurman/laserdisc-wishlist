@@ -14,41 +14,51 @@ function startExpress(dbclient) {
     res.send('Hello World!');
   });
 
-  app.get('/lists/:listId/', (req, res) => {
-    dbclient.getList( req.params.listId, (err, list) => {
-      res.send(list);
-    } );
-  });
-
   app.post('/newList', (req, res) => {
     dbclient.newList( listId => {
       res.send(listId)
     } );
   });
 
-  app.post('/lists/:listId/nameList', (req, res) => {
-    dbclient.nameList( req.params.listId, req.body.listName, (err, reply) => {
+  app.get('/lists/:listId/', (req, res) => {
+    dbclient.getList( req.params.listId, (err, list) => {
+      const title = list[0];
+      const laserdiscs = list.slice(1).map( ld => {
+        return {
+          num: ld.split(': ')[0],
+          title: ld.split(': ').slice(1)[0]
+        };
+      });
+
+      res.send({title, laserdiscs});
+    } );
+  });
+
+  app.post('/lists/:listId/renameList', (req, res) => {
+    dbclient.renameList( req.params.listId, req.body.listName, (err, reply) => {
       res.send(`${reply}`)
     } );
   });
 
   app.post('/lists/:listId/addLaserdisc', (req, res) => {
-    const ldString = `${req.body.ldRef}: ${req.body.ldTitle}`;
+    const ldString = `${req.body.num}: ${req.body.title}`;
     dbclient.addLaserdisc( req.params.listId, ldString, (err, reply) => {
       res.send(`${reply}`)
     } );
   });
 
   app.post('/lists/:listId/removeLaserdisc', (req, res) => {
-    const ldString = `${req.body.ldRef}: ${req.body.ldTitle}`;
+    const ldString = `${req.body.num}: ${req.body.title}`;
     dbclient.removeLaserdisc( req.params.listId, ldString, (err, reply) => {
       res.send(`${reply}`)
     } );
   });
 
-  app.listen(3000, () => {
-    console.log('Express Server listening on port 3000!')
+  app.listen(8000, () => {
+    console.log('Express Server listening on port 8000!')
   });
+
+  return app;
 }
 
 
