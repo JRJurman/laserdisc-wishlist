@@ -6,9 +6,15 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 
-function startExpress(dbclient) {
+function startExpress(dbclient, host) {
   const app = express();
   app.use(bodyParser.json());
+
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", host);
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
   app.get('/', (req, res) => {
     res.send('Hello World!');
@@ -22,7 +28,7 @@ function startExpress(dbclient) {
 
   app.get('/lists/:listId/', (req, res) => {
     dbclient.getList( req.params.listId, (err, list) => {
-      const title = list[0];
+      const name = list[0];
       const laserdiscs = list.slice(1).map( ld => {
         return {
           num: ld.split(': ')[0],
@@ -30,7 +36,7 @@ function startExpress(dbclient) {
         };
       });
 
-      res.send({title, laserdiscs});
+      res.send({name, laserdiscs});
     } );
   });
 

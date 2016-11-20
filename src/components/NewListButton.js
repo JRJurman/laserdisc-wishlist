@@ -1,20 +1,32 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { createNewList } from '../reducers/apiServer';
 
-class NewListButton extends Component {
-  // should a component be connected to a redux store?
-  // if not, how do we make an ajax request cleanly?
-  // do we keep it in local state?
+export class NewListButton extends Component {
+  onCreateNewList() {
+    const {dispatch} = this.props;
+    dispatch(createNewList(dispatch));
+  }
 
-  // how do we switch what location we are at?
-  // => router has navigate to methods
   render() {
     return (
       <div>
-        <Button bsStyle="success">Create New List</Button>
+        <Button
+          disabled={this.props.apiServer.creatingList}
+          onClick={this.onCreateNewList.bind(this)}
+          bsStyle="success">
+          Create New List
+        </Button>
       </div>
     );
   }
 }
 
-export default NewListButton;
+function select(state) {
+  return {
+    apiServer: state.apiServer
+  }
+}
+
+export default connect(select)(NewListButton);

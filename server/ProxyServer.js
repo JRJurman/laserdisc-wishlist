@@ -7,9 +7,9 @@ const express = require('express');
 const proxy = require('proxy-middleware');
 const url = require('url');
 
-function startProxy(host) {
+function startProxy(staticHost) {
   const app = express();
-  const urlOptions = url.parse(host);
+  const urlOptions = url.parse(staticHost);
   const proxyOptions = {
     route: '/',
     preserveHost: true
