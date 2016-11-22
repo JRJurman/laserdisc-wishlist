@@ -15,7 +15,8 @@ export class NewListButton extends Component {
         <Button
           disabled={this.props.apiServer.creatingList}
           onClick={this.onCreateNewList.bind(this)}
-          bsStyle="success">
+          bsStyle="success"
+          bsSize="large">
           Create New List
         </Button>
       </div>

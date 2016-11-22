@@ -1,4 +1,4 @@
-// WebServer.js
+// APIServer.js
 // Exposes a function to kick off an express server given a db client
 // Created by Jesse Jurman
 "use strict";
@@ -10,24 +10,8 @@ function startExpress(dbclient, host) {
   const app = express();
   app.use(bodyParser.json());
 
-  app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", host);
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
-
-  app.get('/', (req, res) => {
-    res.send('Hello World!');
-  });
-
-  app.post('/newList', (req, res) => {
-    dbclient.newList( listId => {
-      res.send(listId)
-    } );
-  });
-
-  app.get('/lists/:listId/', (req, res) => {
-    dbclient.getList( req.params.listId, (err, list) => {
+  function getListFromDB(listId, res) {
+    dbclient.getList( listId, (err, list) => {
       const name = list[0];
       const laserdiscs = list.slice(1).map( ld => {
         return {
@@ -38,11 +22,32 @@ function startExpress(dbclient, host) {
 
       res.send({name, laserdiscs});
     } );
+  }
+
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", host);
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
   });
 
-  app.post('/lists/:listId/renameList', (req, res) => {
+  app.get('/', (req, res) => {
+    res.send(`Hello! This is the API Server that connects the Static App
+      Laserdisc-Wishlist to the Database that powers the data.`);
+  });
+
+  app.post('/newList', (req, res) => {
+    dbclient.newList( listId => {
+      res.send(listId)
+    } );
+  });
+
+  app.get('/lists/:listId/', (req, res) => {
+    getListFromDB(req.params.listId, res);
+  });
+
+  app.post('/lists/:listId/rename', (req, res) => {
     dbclient.renameList( req.params.listId, req.body.listName, (err, reply) => {
-      res.send(`${reply}`)
+      getListFromDB(req.params.listId, res);
     } );
   });
 
@@ -66,6 +71,5 @@ function startExpress(dbclient, host) {
 
   return app;
 }
-
 
 module.exports = {startExpress};

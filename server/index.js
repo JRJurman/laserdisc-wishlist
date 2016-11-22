@@ -5,8 +5,7 @@
 
 const Redis = require('redis');
 const RedisClient = require('./RedisClient');
-const WebServer = require('./WebServer');
-// const ProxyServer = require('./ProxyServer');
+const APIServer = require('./APIServer');
 
 const client = Redis.createClient();
 
@@ -15,8 +14,5 @@ client.on('connect', () => {
 });
 
 const staticHost = 'http://localhost:3000';
-// const proxyHost = 'http://localhost:4000';
-
 const redisClient = new RedisClient(client);
-WebServer.startExpress(redisClient, staticHost);
-// ProxyServer.startProxy(staticHost);
+APIServer.startExpress(redisClient, staticHost);

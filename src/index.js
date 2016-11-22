@@ -17,7 +17,7 @@ ReactDOM.render(
     <Router history={browserHistory}>
       <Route path="/" components={PageWrapper}>
         <IndexRoute components={Main} />
-        <Route path="lists/:listId" components={List} />
+        <Route path="lists/:listId/" components={List} />
       </Route>
     </Router>
   </Provider>,

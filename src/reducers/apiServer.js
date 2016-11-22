@@ -1,10 +1,12 @@
 import fetch from 'isomorphic-fetch';
+import { browserHistory } from 'react-router'
 
 /* action types */
 const CREATE_NEW_LIST = "CREATE_NEW_LIST";
 const LIST_CREATED = "LIST_CREATED";
 const FETCH_LIST = "FETCH_LIST";
 const LIST_DATA = "LIST_DATA";
+const RENAME_LIST = "RENAME_LIST";
 
 /* action creators */
 export function createNewList(dispatch) {
@@ -21,6 +23,7 @@ export function createNewList(dispatch) {
 }
 
 export function listCreated(listId) {
+  browserHistory.push(`/lists/${listId}/`);
   return {
     type: LIST_CREATED,
     listId: listId
@@ -44,6 +47,26 @@ export function listData(list) {
   return {
     type: LIST_DATA,
     list: list
+  };
+}
+
+export function renameList(dispatch, listId, listName) {
+  fetch(`http://localhost:8000/lists/${listId}/rename`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({listName})
+  })
+  .then(function(res) {
+    return res.text();
+  })
+  .then(function(list) {
+    dispatch(listData(JSON.parse(list)));
+  });
+  return {
+    type: RENAME_LIST
   };
 }
 

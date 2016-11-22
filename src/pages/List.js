@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchList } from '../reducers/apiServer';
 
+import ListName from '../components/ListName';
+
 class List extends Component {
   componentDidMount() {
     const {dispatch} = this.props;
@@ -9,14 +11,14 @@ class List extends Component {
   }
 
   render() {
-    console.log(this.props.apiServer.list)
     if (this.props.apiServer.fetchingList !== false) {
-      return <div/>
+      return (<div/>);
     }
 
     return (
       <div>
-        <h2>{this.props.apiServer.list.name}</h2>
+        <ListName listId={this.props.params.listId}
+                  listName={this.props.apiServer.list.name} />
       </div>
     );
   }
