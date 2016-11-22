@@ -59,12 +59,12 @@ export function renameList(dispatch, listId, listName) {
     },
     body: JSON.stringify({listName})
   })
-  .then(function(res) {
-    return res.text();
-  })
-  .then(function(list) {
-    dispatch(listData(JSON.parse(list)));
-  });
+    .then(function(res) {
+      return res.text();
+    })
+    .then(function(list) {
+      dispatch(listData(JSON.parse(list)));
+    });
   return {
     type: RENAME_LIST
   };

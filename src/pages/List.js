@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { fetchList } from '../reducers/apiServer';
 
 import ListName from '../components/ListName';
+import Laserdisc from '../components/Laserdisc';
 
 class List extends Component {
   componentDidMount() {
@@ -19,6 +20,9 @@ class List extends Component {
       <div>
         <ListName listId={this.props.params.listId}
                   listName={this.props.apiServer.list.name} />
+        <Laserdisc title='Adventures In Babysitting' lddbNumber={'00798'} />
+        <Laserdisc title='Howard the Duck' lddbNumber={'02019'} />
+
       </div>
     );
   }
