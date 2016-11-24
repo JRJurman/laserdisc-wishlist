@@ -4,6 +4,30 @@ import { Button } from 'react-bootstrap';
 
 import { editListName, saveListName } from '../reducers/listState';
 
+const inputStyle = {
+  marginTop: '1em',
+  width: '500px',
+  fontSize: '25px',
+  textAlign: 'center'
+};
+
+const buttonStyle = {
+  width: '500px',
+  padding: '5px',
+  marginBottom: '1em',
+}
+
+const listTitleStyle = {
+  margin: '0px',
+  paddingTop: '0.8em',
+  cursor: 'pointer'
+};
+
+const containerStyle = {
+  height: '6em',
+  overflow: 'visible'
+}
+
 class ListName extends Component {
   constructor(props) {
     super(props);
@@ -27,19 +51,16 @@ class ListName extends Component {
   }
 
   render() {
-    const inputStyle = {
-      width: '300px',
-      fontSize: '25px',
-      textAlign: 'center'
-    };
 
-    const buttonStyle = {
-      width: '300px',
-      padding: '5px'
-    }
-
+    let titleDiv = (
+      <h2 style={listTitleStyle}
+          className="list-name"
+          onClick={this.onNameEdit.bind(this)}>
+        {this.props.listName}
+      </h2>
+    );
     if (this.props.listState.editingList) {
-      return (
+      titleDiv = (
         <div>
           <input  style={inputStyle}
                   type='text'
@@ -58,9 +79,9 @@ class ListName extends Component {
     }
 
     return (
-      <h2 onClick={this.onNameEdit.bind(this)}>
-        {this.props.listName}
-      </h2>
+      <div style={containerStyle}>
+        {titleDiv}
+      </div>
     );
   }
 }
