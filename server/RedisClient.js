@@ -55,9 +55,6 @@ class RedisClient {
     callback is a function that takes in the number of deleted elements
   */
   removeLaserdisc(listId, laserdisc, callback) {
-    // get laserdiscs in list
-    // mutate list object to remove laserdisc
-    // push new list object to listId
     this.dbclient.lrem(listId, 0, laserdisc, callback)
   }
 

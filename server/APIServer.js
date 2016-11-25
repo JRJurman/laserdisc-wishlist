@@ -16,7 +16,7 @@ function startExpress(dbclient, host) {
       const laserdiscs = list.slice(1).map( ld => {
         return {
           lddbNumber: ld.split(': ')[0],
-          title: ld.split(': ').slice(1)[0]
+          title: ld.split(': ').slice(1).join(': ')
         };
       });
 
@@ -47,6 +47,7 @@ function startExpress(dbclient, host) {
 
   app.post('/lists/:listId/rename', (req, res) => {
     dbclient.renameList( req.params.listId, req.body.listName, (err, reply) => {
+      if (err) {console.error(err)}
       getListFromDB(req.params.listId, res);
     } );
   });
@@ -54,6 +55,7 @@ function startExpress(dbclient, host) {
   app.post('/lists/:listId/addLaserdisc', (req, res) => {
     const ldString = `${req.body.lddbNumber}: ${req.body.title}`;
     dbclient.addLaserdisc( req.params.listId, ldString, (err, reply) => {
+      if (err) {console.error(err)}
       getListFromDB(req.params.listId, res);
     } );
   });
@@ -61,6 +63,7 @@ function startExpress(dbclient, host) {
   app.post('/lists/:listId/removeLaserdisc', (req, res) => {
     const ldString = `${req.body.lddbNumber}: ${req.body.title}`;
     dbclient.removeLaserdisc( req.params.listId, ldString, (err, reply) => {
+      if (err) {console.error(err)}
       getListFromDB(req.params.listId, res);
     } );
   });
