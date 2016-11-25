@@ -5,23 +5,12 @@ import { fetchList } from '../reducers/apiServer';
 import ListName from '../components/ListName';
 import Laserdisc from '../components/Laserdisc';
 import EmptyLaserdisc from '../components/EmptyLaserdisc';
-import AddLaserdiscButton from '../components/AddLaserdiscButton';
-import ImportListButton from '../components/ImportListButton';
-
-const buttonContainerStyle = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center'
-}
+import AddLaserdiscs from '../components/AddLaserdiscs';
 
 const laserdiscContainerStyle = {
   display: 'flex',
   justifyContent: 'center',
   flexWrap: 'wrap'
-}
-
-const textStyle = {
-  margin: '0.5em'
 }
 
 class List extends Component {
@@ -35,15 +24,16 @@ class List extends Component {
       return (<div/>);
     }
 
-    const laserdiscList = [
-      {title:'Adventures In Babysitting', lddbNumber:'00798'},
-      {title:'Howard the Duck', lddbNumber:'02019'},
-      {title:'The Nightmare Before Christmas', lddbNumber:'14601'},
-      {title:'Things to Do in Denver When You\'re Dead', lddbNumber:'07200'},
-      {title:'Phantom of the Paradise', lddbNumber:'24666'},
-      {title:'Transformers: The Movie', lddbNumber:'00171'},
-      {title:'Bubblegum Crisis #1: Ep. 1-3', lddbNumber:'08990'}
-    ];
+    // const laserdiscList = [
+    //   {title:'Adventures In Babysitting', lddbNumber:'00798'},
+    //   {title:'Howard the Duck', lddbNumber:'02019'},
+    //   {title:'The Nightmare Before Christmas', lddbNumber:'14601'},
+    //   {title:'Things to Do in Denver When You\'re Dead', lddbNumber:'07200'},
+    //   {title:'Phantom of the Paradise', lddbNumber:'24666'},
+    //   {title:'Transformers: The Movie', lddbNumber:'00171'},
+    //   {title:'Bubblegum Crisis #1: Ep. 1-3', lddbNumber:'08990'}
+    // ];
+    const laserdiscList = this.props.apiServer.list.laserdiscs;
 
     const reactLaserdiscs = laserdiscList.map( ld => {
       return (<Laserdisc  key={ld.lddbNumber}
@@ -59,11 +49,7 @@ class List extends Component {
 
     return (
       <div>
-        <div style={buttonContainerStyle}>
-          <AddLaserdiscButton />
-          <h2 style={textStyle}>or</h2>
-          <ImportListButton />
-        </div>
+        <AddLaserdiscs listId={this.props.params.listId} />
         <ListName listId={this.props.params.listId}
                   listName={this.props.apiServer.list.name} />
         <div style={laserdiscContainerStyle}>

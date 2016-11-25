@@ -7,7 +7,7 @@ import { editListName, saveListName } from '../reducers/listState';
 const inputStyle = {
   marginTop: '1em',
   width: '500px',
-  fontSize: '25px',
+  fontSize: '1.8em',
   textAlign: 'center'
 };
 
@@ -18,13 +18,15 @@ const buttonStyle = {
 }
 
 const listTitleStyle = {
-  margin: '0px',
+  margin: 'auto',
   paddingTop: '0.8em',
-  cursor: 'pointer'
+  cursor: 'pointer',
+  width: '500px'
 };
 
 const containerStyle = {
   height: '6em',
+  marginBottom: '20px',
   overflow: 'visible'
 }
 
@@ -43,7 +45,7 @@ class ListName extends Component {
     dispatch(editListName());
   }
 
-  onNameSave(event) {
+  onNameSave() {
     const {dispatch, listId} = this.props;
     dispatch(
       saveListName(dispatch, listId, this.state.listName)
@@ -54,7 +56,6 @@ class ListName extends Component {
 
     let titleDiv = (
       <h2 style={listTitleStyle}
-          className="list-name"
           onClick={this.onNameEdit.bind(this)}>
         {this.props.listName}
       </h2>
@@ -62,8 +63,7 @@ class ListName extends Component {
     if (this.props.listState.editingList) {
       titleDiv = (
         <div>
-          <input  style={inputStyle}
-                  type='text'
+          <input  style={inputStyle} type='text'
                   value={this.state.listName}
                   onChange={this.updateListName.bind(this)}/>
           <div>

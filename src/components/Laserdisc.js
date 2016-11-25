@@ -47,10 +47,12 @@ export class Laserdisc extends Component {
       <div style={style}>
         <Panel  header={this.props.title} bsStyle="primary"
                 style={laserdiscPanelStyle}>
-          <img  onClick={this.onPanelSelect.bind(this)}
-                src={thumbPage}
-                alt={`${this.props.title}-cover`}
-                style={laserdiscCoverStyle}/>
+          <a  href={`http://www.lddb.com/laserdisc/${this.props.lddbNumber}/`}
+              target="_blank">
+            <img  src={thumbPage}
+                  alt={`http://www.lddb.com/laserdisc/${this.props.lddbNumber}/`}
+                  style={laserdiscCoverStyle}/>
+          </a>
         </Panel>
         <Button bsStyle="danger" style={removeButtonStyle}>
           Remove From List

@@ -7,6 +7,7 @@ const LIST_CREATED = "LIST_CREATED";
 const FETCH_LIST = "FETCH_LIST";
 const LIST_DATA = "LIST_DATA";
 const RENAME_LIST = "RENAME_LIST";
+const ADD_LASERDISC = "ADD_LASERDISC";
 
 /* action creators */
 export function createNewList(dispatch) {
@@ -67,6 +68,26 @@ export function renameList(dispatch, listId, listName) {
     });
   return {
     type: RENAME_LIST
+  };
+}
+
+export function addLaserdisc(dispatch, listId, title, lddbNumber) {
+  fetch(`http://localhost:8000/lists/${listId}/addLaserdisc`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({title, lddbNumber})
+  })
+    .then(function(res) {
+      return res.text()
+    })
+    .then(function(list) {
+      dispatch(listData(JSON.parse(list)));
+    });
+  return {
+    type: ADD_LASERDISC
   };
 }
 

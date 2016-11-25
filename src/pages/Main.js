@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 
-import NewListButton from '../components/NewListButton';
-import ImportListButton from '../components/ImportListButton';
+import NewList from '../components/NewList';
 
 const mainStyle = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center'
-}
-
-const textStyle = {
-  margin: '0.5em'
 }
 
 class Main extends Component {
@@ -19,9 +14,7 @@ class Main extends Component {
 
     return (
       <div style={style}>
-        <NewListButton />
-        <h2 style={textStyle}>or</h2>
-        <ImportListButton/>
+        <NewList />
       </div>
     );
   }
