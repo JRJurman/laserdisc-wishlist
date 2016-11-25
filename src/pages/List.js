@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import { fetchList, removeLaserdisc } from '../reducers/apiServer';
+import {  editListName, saveListName, addingLaserdisc,
+          finishAddingLaserdisc } from '../reducers/listState';
 
 import ListName from '../components/ListName';
 import Laserdisc from '../components/Laserdisc';
@@ -19,6 +22,27 @@ class List extends Component {
     dispatch(fetchList(dispatch, this.props.params.listId));
   }
 
+  onNameEdit() {
+    const {dispatch} = this.props;
+    dispatch(editListName());
+  }
+
+  onNameSave(listName) {
+    const {dispatch} = this.props;
+    dispatch(saveListName(dispatch, this.props.params.listId, listName));
+  }
+
+  onSelectAddLaserdisc() {
+    this.props.dispatch(addingLaserdisc());
+  }
+
+  onAddLaserdisc(title, lddbNumber) {
+    const {dispatch} = this.props;
+    dispatch(
+      finishAddingLaserdisc(dispatch, this.props.params.listId, title, lddbNumber)
+    );
+  }
+
   onRemoveLaserdisc(title, lddbNumber) {
     const {dispatch} = this.props;
     const {listId} = this.props.params;
@@ -26,19 +50,11 @@ class List extends Component {
   }
 
   render() {
-    if (this.props.apiServer.fetchingList !== false) {
+    if ((this.props.apiServer.list === undefined) ||
+        (this.props.apiServer.fetchingList !== false)) {
       return (<div/>);
     }
 
-    // const laserdiscList = [
-    //   {title:'Adventures In Babysitting', lddbNumber:'00798'},
-    //   {title:'Howard the Duck', lddbNumber:'02019'},
-    //   {title:'The Nightmare Before Christmas', lddbNumber:'14601'},
-    //   {title:'Things to Do in Denver When You\'re Dead', lddbNumber:'07200'},
-    //   {title:'Phantom of the Paradise', lddbNumber:'24666'},
-    //   {title:'Transformers: The Movie', lddbNumber:'00171'},
-    //   {title:'Bubblegum Crisis #1: Ep. 1-3', lddbNumber:'08990'}
-    // ];
     const laserdiscList = this.props.apiServer.list.laserdiscs;
 
     const reactLaserdiscs = laserdiscList.map( ld => {
@@ -57,9 +73,13 @@ class List extends Component {
 
     return (
       <div>
-        <AddLaserdiscs listId={this.props.params.listId} />
-        <ListName listId={this.props.params.listId}
-                  listName={this.props.apiServer.list.name} />
+        <AddLaserdiscs  addingLaserdisc={this.props.listState.addingLaserdisc}
+                        onSelectAddLaserdisc={this.onSelectAddLaserdisc.bind(this)}
+                        onAddLaserdisc={this.onAddLaserdisc.bind(this)} />
+        <ListName listName={this.props.apiServer.list.name}
+                  onNameEdit={this.onNameEdit.bind(this)}
+                  onNameSave={this.onNameSave.bind(this)}
+                  editingList={this.props.listState.editingList} />
         <div style={laserdiscContainerStyle}>
           {reactLaserdiscs}
         </div>
@@ -70,7 +90,8 @@ class List extends Component {
 
 function select(state) {
   return {
-    apiServer: state.apiServer
+    apiServer: state.apiServer,
+    listState: state.listState
   }
 }
 

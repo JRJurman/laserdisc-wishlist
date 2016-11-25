@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
-
-import { editListName, saveListName } from '../reducers/listState';
 
 const inputStyle = {
   marginTop: '1em',
@@ -40,27 +37,15 @@ class ListName extends Component {
     this.setState({listName: event.target.value});
   }
 
-  onNameEdit() {
-    const {dispatch} = this.props;
-    dispatch(editListName());
-  }
-
-  onNameSave() {
-    const {dispatch, listId} = this.props;
-    dispatch(
-      saveListName(dispatch, listId, this.state.listName)
-    );
-  }
-
   render() {
 
     let titleDiv = (
       <h2 style={listTitleStyle}
-          onClick={this.onNameEdit.bind(this)}>
+          onClick={this.props.onNameEdit}>
         {this.props.listName}
       </h2>
     );
-    if (this.props.listState.editingList) {
+    if (this.props.editingList) {
       titleDiv = (
         <div>
           <input  style={inputStyle} type='text'
@@ -70,7 +55,7 @@ class ListName extends Component {
             <Button style={buttonStyle}
                     bsStyle="success"
                     bsSize="large"
-                    onClick={this.onNameSave.bind(this)}>
+                    onClick={this.props.onNameSave.bind(this, this.state.listName)}>
               Rename List
             </Button>
           </div>
@@ -86,10 +71,4 @@ class ListName extends Component {
   }
 }
 
-function select(state) {
-  return {
-    listState: state.listState
-  }
-}
-
-export default connect(select)(ListName);
+export default ListName;

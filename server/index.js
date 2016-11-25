@@ -3,6 +3,7 @@
 // Created By Jesse Jurman
 "use strict";
 
+const chalk = require('chalk');
 const Redis = require('redis');
 const RedisClient = require('./RedisClient');
 const APIServer = require('./APIServer');
@@ -10,7 +11,7 @@ const APIServer = require('./APIServer');
 const client = Redis.createClient();
 
 client.on('connect', () => {
-    console.log('Redis Client Connected');
+    console.log(chalk.bold.blue('Redis Client Connected'));
 });
 
 const staticHost = 'http://localhost:3000';

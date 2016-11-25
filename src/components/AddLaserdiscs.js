@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
-
-import { addingLaserdisc, finishAddingLaserdisc } from '../reducers/listState';
 
 const buttonContainerStyle = {
   display: 'flex',
@@ -33,18 +30,8 @@ export class AddLaserdiscs extends Component {
     this.setState({lddbNumber: event.target.value});
   }
 
-  onSelectAddLaserdisc() {
-    this.props.dispatch(addingLaserdisc());
-  }
-
-  onAddLaserdisc() {
-    const {dispatch, listId} = this.props;
-    const {title, lddbNumber} = this.state;
-    dispatch(finishAddingLaserdisc(dispatch, listId, title, lddbNumber));
-  }
-
   render() {
-    if(this.props.listState.addingLaserdisc) {
+    if(this.props.addingLaserdisc) {
       return (
         <div style={buttonContainerStyle}>
           <input  style={Object.assign({}, inputStyle, {width: '11em'})}
@@ -54,7 +41,7 @@ export class AddLaserdiscs extends Component {
                   onChange={this.updateLDDBNumber.bind(this)}
                   type="text" placeholder="#LDDB" />
           <Button
-            onClick={this.onAddLaserdisc.bind(this)}
+            onClick={this.props.onAddLaserdisc.bind(this, this.state.title, this.state.lddbNumber)}
             style={this.props.style} bsStyle="success" bsSize="large">
             Add Laserdisc
           </Button>
@@ -64,12 +51,13 @@ export class AddLaserdiscs extends Component {
     return (
       <div style={buttonContainerStyle}>
         <Button
-          onClick={this.onSelectAddLaserdisc.bind(this)}
+          onClick={this.props.onSelectAddLaserdisc}
           style={this.props.style} bsStyle="success" bsSize="large">
           Add a Laserdisc
         </Button>
         <h2 style={textStyle}>or</h2>
         <Button
+          disabled={true}
           style={this.props.style} bsStyle="info" bsSize="large">
           Import an LDDB List
         </Button>
@@ -78,10 +66,4 @@ export class AddLaserdiscs extends Component {
   }
 }
 
-function select(state) {
-  return {
-    listState: state.listState
-  }
-}
-
-export default connect(select)(AddLaserdiscs);
+export default AddLaserdiscs;

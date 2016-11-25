@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
-import { connect } from 'react-redux';
-import { createNewList } from '../reducers/apiServer';
 
 const buttonContainerStyle = {
   display: 'flex',
@@ -14,17 +12,12 @@ const textStyle = {
 }
 
 export class NewList extends Component {
-  onCreateNewList() {
-    const {dispatch} = this.props;
-    dispatch(createNewList(dispatch));
-  }
-
   render() {
     return (
       <div style={buttonContainerStyle}>
         <Button
-          disabled={this.props.apiServer.creatingList}
-          onClick={this.onCreateNewList.bind(this)}
+          disabled={this.props.disabled}
+          onClick={this.props.onCreateNewList}
           style={this.props.style}
           bsStyle="success"
           bsSize="large">
@@ -32,6 +25,7 @@ export class NewList extends Component {
         </Button>
         <h2 style={textStyle}>or</h2>
         <Button
+          disabled={true}
           style={this.props.style}
           bsStyle="info"
           bsSize="large">
@@ -42,10 +36,4 @@ export class NewList extends Component {
   }
 }
 
-function select(state) {
-  return {
-    apiServer: state.apiServer
-  }
-}
-
-export default connect(select)(NewList);
+export default NewList;

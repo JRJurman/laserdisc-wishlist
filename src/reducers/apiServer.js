@@ -113,7 +113,10 @@ export function removeLaserdisc(dispatch, listId, title, lddbNumber) {
 }
 
 /* reducer */
-export default function apiServer(apiServer = {}, action) {
+export default function apiServer(apiServer = {
+  creatingList: false,
+  fetchingList: false
+}, action) {
   switch(action.type) {
     case CREATE_NEW_LIST:
       return Object.assign({}, apiServer, {creatingList: true});

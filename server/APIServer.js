@@ -3,6 +3,7 @@
 // Created by Jesse Jurman
 "use strict";
 
+const chalk = require('chalk');
 const express = require('express');
 const bodyParser = require('body-parser')
 
@@ -47,7 +48,7 @@ function startExpress(dbclient, host) {
 
   app.post('/lists/:listId/rename', (req, res) => {
     dbclient.renameList( req.params.listId, req.body.listName, (err, reply) => {
-      if (err) {console.error(err)}
+      if (err) {console.error(chalk.bold.red(err))}
       getListFromDB(req.params.listId, res);
     } );
   });
@@ -55,7 +56,7 @@ function startExpress(dbclient, host) {
   app.post('/lists/:listId/addLaserdisc', (req, res) => {
     const ldString = `${req.body.lddbNumber}: ${req.body.title}`;
     dbclient.addLaserdisc( req.params.listId, ldString, (err, reply) => {
-      if (err) {console.error(err)}
+      if (err) {console.error(chalk.bold.red(err))}
       getListFromDB(req.params.listId, res);
     } );
   });
@@ -63,13 +64,13 @@ function startExpress(dbclient, host) {
   app.post('/lists/:listId/removeLaserdisc', (req, res) => {
     const ldString = `${req.body.lddbNumber}: ${req.body.title}`;
     dbclient.removeLaserdisc( req.params.listId, ldString, (err, reply) => {
-      if (err) {console.error(err)}
+      if (err) {console.error(chalk.bold.red(err))}
       getListFromDB(req.params.listId, res);
     } );
   });
 
   app.listen(8000, () => {
-    console.log('Express Server listening on port 8000!')
+    console.log(chalk.bold.blue('Express Server listening on port 8000!'));
   });
 
   return app;
