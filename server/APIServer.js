@@ -61,7 +61,7 @@ function startExpress(dbclient, host) {
   app.post('/lists/:listId/removeLaserdisc', (req, res) => {
     const ldString = `${req.body.lddbNumber}: ${req.body.title}`;
     dbclient.removeLaserdisc( req.params.listId, ldString, (err, reply) => {
-      res.send(`${reply}`)
+      getListFromDB(req.params.listId, res);
     } );
   });
 

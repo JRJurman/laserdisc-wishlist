@@ -27,7 +27,7 @@ export class Laserdisc extends Component {
   }
 
   render() {
-    const {lddbNumber} = this.props;
+    const {lddbNumber, title} = this.props;
 
     let lddbIntNumber = parseInt(lddbNumber, 10);
     if ((lddbIntNumber % 100) === 0) {
@@ -45,7 +45,7 @@ export class Laserdisc extends Component {
 
     return (
       <div style={style}>
-        <Panel  header={this.props.title} bsStyle="primary"
+        <Panel  header={title} bsStyle="primary"
                 style={laserdiscPanelStyle}>
           <a  href={`http://www.lddb.com/laserdisc/${this.props.lddbNumber}/`}
               target="_blank">
@@ -54,7 +54,8 @@ export class Laserdisc extends Component {
                   style={laserdiscCoverStyle}/>
           </a>
         </Panel>
-        <Button bsStyle="danger" style={removeButtonStyle}>
+        <Button bsStyle="danger" style={removeButtonStyle}
+                onClick={this.props.onRemove}>
           Remove From List
         </Button>
       </div>

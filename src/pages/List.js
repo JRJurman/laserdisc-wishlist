@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchList } from '../reducers/apiServer';
+import { fetchList, removeLaserdisc } from '../reducers/apiServer';
 
 import ListName from '../components/ListName';
 import Laserdisc from '../components/Laserdisc';
@@ -17,6 +17,12 @@ class List extends Component {
   componentDidMount() {
     const {dispatch} = this.props;
     dispatch(fetchList(dispatch, this.props.params.listId));
+  }
+
+  onRemoveLaserdisc(title, lddbNumber) {
+    const {dispatch} = this.props;
+    const {listId} = this.props.params;
+    dispatch(removeLaserdisc(dispatch, listId, title, lddbNumber));
   }
 
   render() {
@@ -38,7 +44,9 @@ class List extends Component {
     const reactLaserdiscs = laserdiscList.map( ld => {
       return (<Laserdisc  key={ld.lddbNumber}
                           title={ld.title}
-                          lddbNumber={ld.lddbNumber} />);
+                          lddbNumber={ld.lddbNumber}
+                          onRemove={this.onRemoveLaserdisc.bind(this, ld.title, ld.lddbNumber)} />
+      );
     });
 
     if (reactLaserdiscs.length > 3) {
