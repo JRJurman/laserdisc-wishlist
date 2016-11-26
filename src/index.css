@@ -7,3 +7,10 @@ body {
 html, body, #root {
   height: 100%
 }
+
+/* overriding bootstrap css */
+.panel-heading {
+  border-radius: 6px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}

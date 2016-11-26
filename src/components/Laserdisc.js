@@ -3,7 +3,11 @@ import { Panel, Button } from 'react-bootstrap';
 
 const laserdiscPanelStyle = {
   width: '250px',
-  marginBottom: '0px'
+  marginBottom: '0px',
+  borderTopRightRadius: '10px',
+  borderTopLeftRadius: '10px',
+  borderBottomRightRadius: '0px',
+  borderBottomLeftRadius: '0px'
 }
 
 const laserdiscCoverStyle = {
@@ -12,7 +16,11 @@ const laserdiscCoverStyle = {
 
 const removeButtonStyle = {
   width: '250px',
-  display: 'block'
+  display: 'block',
+  borderTopRightRadius: '0px',
+  borderTopLeftRadius: '0px',
+  borderBottomRightRadius: '10px',
+  borderBottomLeftRadius: '10px'
 }
 
 const componentStyle = {
@@ -45,7 +53,7 @@ export class Laserdisc extends Component {
 
     return (
       <div style={style}>
-        <Panel  header={title} bsStyle="primary"
+        <Panel  header={title} bsStyle="warning"
                 style={laserdiscPanelStyle}>
           <a  href={`http://www.lddb.com/laserdisc/${this.props.lddbNumber}/`}
               target="_blank">

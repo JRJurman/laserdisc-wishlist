@@ -2,29 +2,32 @@ import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 
 const inputStyle = {
-  marginTop: '1em',
-  width: '500px',
-  fontSize: '1.8em',
-  textAlign: 'center'
+  width: '14em',
+  textAlign: 'right',
+  paddingRight: '0.4em',
+  color: '#333333',
+  fontSize: '0.85em'
 };
 
 const buttonStyle = {
-  width: '500px',
-  padding: '5px',
-  marginBottom: '1em',
+  padding: '0px 5px',
+  fontSize: '1em',
+  marginBottom: '4px',
+  borderTopLeftRadius: '0px',
+  borderBottomLeftRadius: '0px'
 }
 
 const listTitleStyle = {
-  margin: 'auto',
-  paddingTop: '0.8em',
-  cursor: 'pointer',
-  width: '500px'
+  fontWeight: 'bold',
+  lineHeight: '1.1',
+  color: 'inherit',
+  paddingRight: '0.4em',
+  cursor: 'pointer'
 };
 
 const containerStyle = {
-  height: '6em',
-  marginBottom: '20px',
-  overflow: 'visible'
+  overflow: 'visible',
+  marginTop: '17px'
 }
 
 class ListName extends Component {
@@ -38,12 +41,18 @@ class ListName extends Component {
   }
 
   render() {
-
     let titleDiv = (
-      <h2 style={listTitleStyle}
-          onClick={this.props.onNameEdit}>
-        {this.props.listName}
-      </h2>
+      <div onClick={this.props.onNameEdit}>
+        <span style={listTitleStyle}>
+          {this.props.listName}
+        </span>
+        <Button style={buttonStyle}
+                bsStyle="success"
+                bsSize="large"
+                onClick={this.props.onNameEdit}>
+          <i className="fa fa-pencil" aria-hidden="true" />
+        </Button>
+      </div>
     );
     if (this.props.editingList) {
       titleDiv = (
@@ -51,14 +60,12 @@ class ListName extends Component {
           <input  style={inputStyle} type='text'
                   value={this.state.listName}
                   onChange={this.updateListName.bind(this)}/>
-          <div>
-            <Button style={buttonStyle}
-                    bsStyle="success"
-                    bsSize="large"
-                    onClick={this.props.onNameSave.bind(this, this.state.listName)}>
-              Rename List
-            </Button>
-          </div>
+          <Button style={buttonStyle}
+                  bsStyle="success"
+                  bsSize="large"
+                  onClick={this.props.onNameSave.bind(this, this.state.listName)}>
+            <i className="fa fa-floppy-o" aria-hidden="true" />
+          </Button>
         </div>
       );
     }

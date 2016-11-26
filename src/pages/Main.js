@@ -28,7 +28,6 @@ class Main extends Component {
   }
 }
 
-
 function select(state) {
   return {
     apiServer: state.apiServer

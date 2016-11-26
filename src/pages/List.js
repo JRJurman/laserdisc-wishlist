@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { fetchList, removeLaserdisc } from '../reducers/apiServer';
-import {  editListName, saveListName, addingLaserdisc,
-          finishAddingLaserdisc } from '../reducers/listState';
+import { addingLaserdisc, finishAddingLaserdisc } from '../reducers/listState';
 
-import ListName from '../components/ListName';
 import Laserdisc from '../components/Laserdisc';
 import EmptyLaserdisc from '../components/EmptyLaserdisc';
 import AddLaserdiscs from '../components/AddLaserdiscs';
@@ -20,16 +18,6 @@ class List extends Component {
   componentDidMount() {
     const {dispatch} = this.props;
     dispatch(fetchList(dispatch, this.props.params.listId));
-  }
-
-  onNameEdit() {
-    const {dispatch} = this.props;
-    dispatch(editListName());
-  }
-
-  onNameSave(listName) {
-    const {dispatch} = this.props;
-    dispatch(saveListName(dispatch, this.props.params.listId, listName));
   }
 
   onSelectAddLaserdisc() {
@@ -76,10 +64,6 @@ class List extends Component {
         <AddLaserdiscs  addingLaserdisc={this.props.listState.addingLaserdisc}
                         onSelectAddLaserdisc={this.onSelectAddLaserdisc.bind(this)}
                         onAddLaserdisc={this.onAddLaserdisc.bind(this)} />
-        <ListName listName={this.props.apiServer.list.name}
-                  onNameEdit={this.onNameEdit.bind(this)}
-                  onNameSave={this.onNameSave.bind(this)}
-                  editingList={this.props.listState.editingList} />
         <div style={laserdiscContainerStyle}>
           {reactLaserdiscs}
         </div>

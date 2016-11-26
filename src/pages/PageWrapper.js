@@ -1,19 +1,51 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
+import { connect } from 'react-redux';
+
+import { editListName, saveListName } from '../reducers/listState';
+
+import ListName from '../components/ListName';
 
 const appStyle = {
   textAlign: 'center'
 }
 
 class PageWrapper extends Component {
+
+  onNameEdit() {
+    const {dispatch} = this.props;
+    dispatch(editListName());
+  }
+
+  onNameSave(listName) {
+    const {dispatch} = this.props;
+    dispatch(saveListName(dispatch, this.props.params.listId, listName));
+  }
+
   render() {
+    let listNameComponent = <div />
+    if (this.props.apiServer.list) {
+      listNameComponent = <ListName listName={this.props.apiServer.list.name}
+                onNameEdit={this.onNameEdit.bind(this)}
+                onNameSave={this.onNameSave.bind(this)}
+                editingList={this.props.listState.editingList} />
+    }
     return (
       <div style={appStyle}>
-        <Header/>
+        <Header>
+          {listNameComponent}
+        </Header>
         {this.props.children}
       </div>
     );
   }
 }
 
-export default PageWrapper;
+function select(state) {
+  return {
+    apiServer: state.apiServer,
+    listState: state.listState
+  }
+}
+
+export default connect(select)(PageWrapper);

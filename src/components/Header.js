@@ -1,30 +1,38 @@
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router'
+
+import Logo from '../components/Logo';
 
 const appHeaderStyle = {
   backgroundColor: '#222',
-  padding: '5px',
+  fontFamily: 'Michroma',
+  fontSize: '28px',
+  fontWeight: 'bold',
+  padding: '5px 20px',
   color: 'white',
-  marginBottom: '20px'
+  marginBottom: '20px',
+  display:'flex',
+  justifyContent:'space-between'
 };
 
 const titleStyle = {
-  cursor: 'pointer'
+  cursor: 'pointer',
+  marginTop: '17px'
 };
+
 
 class Header extends Component {
 
   onSelectTitle() {
-    browserHistory.push('/');
+    window.location = "/"
   }
 
   render() {
     return (
       <div style={appHeaderStyle}>
-        <h2 style={titleStyle}
-            onClick={this.onSelectTitle}>
-          Laserdisc Wishlist
-        </h2>
+        <div style={titleStyle} onClick={this.onSelectTitle}>
+          <Logo />
+        </div>
+        {this.props.children}
       </div>
     );
   }

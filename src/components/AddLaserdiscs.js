@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 
-const buttonContainerStyle = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center'
-}
-
 const textStyle = {
+  fontSize: '1.5em',
   margin: '0.5em'
 }
 
@@ -33,7 +28,7 @@ export class AddLaserdiscs extends Component {
   render() {
     if(this.props.addingLaserdisc) {
       return (
-        <div style={buttonContainerStyle}>
+        <div>
           <input  style={Object.assign({}, inputStyle, {width: '11em'})}
                   onChange={this.updateTitle.bind(this)}
                   type="text" placeholder="Title" />
@@ -49,13 +44,13 @@ export class AddLaserdiscs extends Component {
       );
     }
     return (
-      <div style={buttonContainerStyle}>
+      <div>
         <Button
           onClick={this.props.onSelectAddLaserdisc}
           style={this.props.style} bsStyle="success" bsSize="large">
           Add a Laserdisc
         </Button>
-        <h2 style={textStyle}>or</h2>
+        <span style={textStyle}>or</span>
         <Button
           disabled={true}
           style={this.props.style} bsStyle="info" bsSize="large">
