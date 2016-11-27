@@ -33,7 +33,7 @@ function startExpress(dbclient, host) {
 
   app.get('/', (req, res) => {
     res.send(`Hello! This is the API Server that connects the Static App
-      Laserdisc-Wishlist to the Database that powers the data.`);
+      MyLaserDisc to the Database that powers the data.`);
   });
 
   app.post('/newList', (req, res) => {

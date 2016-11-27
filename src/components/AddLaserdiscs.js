@@ -38,7 +38,7 @@ export class AddLaserdiscs extends Component {
           <Button
             onClick={this.props.onAddLaserdisc.bind(this, this.state.title, this.state.lddbNumber)}
             style={this.props.style} bsStyle="success" bsSize="large">
-            Add Laserdisc
+            Add LaserDisc
           </Button>
         </div>
       );
@@ -48,7 +48,7 @@ export class AddLaserdiscs extends Component {
         <Button
           onClick={this.props.onSelectAddLaserdisc}
           style={this.props.style} bsStyle="success" bsSize="large">
-          Add a Laserdisc
+          Add a LaserDisc
         </Button>
         <span style={textStyle}>or</span>
         <Button

@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
-import Header from '../components/Header';
 import { connect } from 'react-redux';
 
 import { editListName, saveListName } from '../reducers/listState';
 
+import Header from '../components/Header';
 import ListName from '../components/ListName';
+import Footer from '../components/Footer';
 
 const appStyle = {
-  textAlign: 'center'
-}
+  textAlign: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  minHeight: '100%'
+};
+
+const bodyStyle = {
+  flex: '1 1'
+};
 
 class PageWrapper extends Component {
 
@@ -35,7 +43,10 @@ class PageWrapper extends Component {
         <Header>
           {listNameComponent}
         </Header>
-        {this.props.children}
+        <div style={bodyStyle}>
+          {this.props.children}
+        </div>
+        <Footer />
       </div>
     );
   }

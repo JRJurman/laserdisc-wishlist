@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Logo from '../components/Logo';
 
 const appHeaderStyle = {
-  backgroundColor: '#222',
+  backgroundColor: '#2b2424',
   fontFamily: 'Michroma',
   fontSize: '28px',
   fontWeight: 'bold',
@@ -11,26 +11,27 @@ const appHeaderStyle = {
   color: 'white',
   marginBottom: '20px',
   display:'flex',
+  flexWrap: 'wrap',
   justifyContent:'space-between'
 };
 
 const titleStyle = {
-  cursor: 'pointer',
   marginTop: '17px'
 };
 
+const linkStyle = {
+  textDecoration: 'none'
+}
 
 class Header extends Component {
 
-  onSelectTitle() {
-    window.location = "/"
-  }
-
   render() {
+    const style = Object.assign({}, appHeaderStyle, this.props.style);
+
     return (
-      <div style={appHeaderStyle}>
-        <div style={titleStyle} onClick={this.onSelectTitle}>
-          <Logo />
+      <div style={style}>
+        <div style={titleStyle}>
+          <a style={linkStyle} href="/"><Logo /></a>
         </div>
         {this.props.children}
       </div>
