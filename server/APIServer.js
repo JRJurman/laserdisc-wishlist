@@ -13,11 +13,13 @@ function startExpress(dbclient, host) {
 
   function getListFromDB(listId, res) {
     dbclient.getList( listId, (err, list) => {
+      if (err) {console.error(chalk.bold.red(err))}
       const name = list[0];
+
       const laserdiscs = list.slice(1).map( ld => {
         return {
           lddbNumber: ld.split(': ')[0],
-          title: ld.split(': ').slice(1).join(': ')
+          title: ld.split(': ').slice(1).join(': '),
         };
       });
 
@@ -38,7 +40,7 @@ function startExpress(dbclient, host) {
 
   app.post('/newList', (req, res) => {
     dbclient.newList( listId => {
-      res.send(listId)
+      res.send(listId);
     } );
   });
 

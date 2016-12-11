@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 
+const logoStyle = {
+  fontFamily: 'Michroma',
+  fontWeight: 'bold'
+}
+
 const firstStyle = {
   color: '#222222',
   textShadow: `
@@ -20,7 +25,7 @@ class Logo extends Component {
     const secondStyleMerge = Object.assign({}, secondStyle, this.props.style)
 
     return (
-      <div>
+      <div style={logoStyle}>
         <span style={firstStyleMerge}>
           MY
         </span>

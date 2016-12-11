@@ -6,11 +6,11 @@ const SAVE_LIST_NAME = "SAVE_LIST_NAME";
 const ADDING_LASERDISC = "ADDING_LASERDISC";
 const FINISH_ADDING_LASERDISC = "FINISH_ADDING_LASERDISC";
 
-
 /* action creators */
 export function editListName() {
   return {
-    type: EDIT_LIST_NAME
+    type: EDIT_LIST_NAME,
+    editAction: 'listName'
   };
 }
 
@@ -37,21 +37,21 @@ export function finishAddingLaserdisc(dispatch, listId, title, lddbNumber) {
 /* reducer */
 export default function listState(
     listState = {
-      editingList: false,
-      addingLaserdisc: false
+      addingLaserdisc: false,
+      editAction: null
     }, action
   ) {
   switch(action.type) {
     case EDIT_LIST_NAME:
-      return Object.assign({}, listState, {editingList: true});
+      return Object.assign({}, listState, {
+        editAction: action.editAction
+      });
     case SAVE_LIST_NAME:
       return Object.assign({}, listState, {
-        editingList: false,
-        listId: action.listId
+        editAction: null
       });
     case ADDING_LASERDISC:
       return Object.assign({}, listState, {
-        editingList: false,
         addingLaserdisc: true
       });
     case FINISH_ADDING_LASERDISC:

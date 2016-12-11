@@ -4,9 +4,7 @@ import Logo from '../components/Logo';
 
 const appHeaderStyle = {
   backgroundColor: '#2b2424',
-  fontFamily: 'Michroma',
   fontSize: '28px',
-  fontWeight: 'bold',
   padding: '5px 20px',
   color: 'white',
   marginBottom: '20px',

@@ -20,7 +20,9 @@ class RedisClient {
 
       this.dbclient.exists(newListId, (err, exists) => {
         if (!!exists) { throw `List with id:${newListId} already exists`; }
-        this.dbclient.lpush(newListId, "New List", listCallback);
+        this.dbclient.multi()
+                      .lpush(newListId, "Untitled List")
+                      .exec(listCallback);
       });
 
     });
@@ -55,7 +57,7 @@ class RedisClient {
     callback is a function that takes in the number of deleted elements
   */
   removeLaserdisc(listId, laserdisc, callback) {
-    this.dbclient.lrem(listId, 0, laserdisc, callback)
+    this.dbclient.lrem(listId, 0, laserdisc, callback);
   }
 
 }

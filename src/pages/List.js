@@ -26,9 +26,8 @@ class List extends Component {
 
   onAddLaserdisc(title, lddbNumber) {
     const {dispatch} = this.props;
-    dispatch(
-      finishAddingLaserdisc(dispatch, this.props.params.listId, title, lddbNumber)
-    );
+    const {listId} = this.props.params;
+    dispatch(finishAddingLaserdisc(dispatch, listId, title, lddbNumber));
   }
 
   onRemoveLaserdisc(title, lddbNumber) {
@@ -53,17 +52,22 @@ class List extends Component {
       );
     });
 
+    // buffer object to left align and keep things centered
     if (reactLaserdiscs.length > 3) {
       reactLaserdiscs.push(<EmptyLaserdisc key='empty-a'/>);
       reactLaserdiscs.push(<EmptyLaserdisc key='empty-b'/>);
       reactLaserdiscs.push(<EmptyLaserdisc key='empty-c'/>);
     }
 
+    const addLaserdiscs = this.props.apiServer.list.locked ? (<div />) : (
+      <AddLaserdiscs  addingLaserdisc={this.props.listState.addingLaserdisc}
+                      onSelectAddLaserdisc={this.onSelectAddLaserdisc.bind(this)}
+                      onAddLaserdisc={this.onAddLaserdisc.bind(this)} />
+    );
+
     return (
       <div>
-        <AddLaserdiscs  addingLaserdisc={this.props.listState.addingLaserdisc}
-                        onSelectAddLaserdisc={this.onSelectAddLaserdisc.bind(this)}
-                        onAddLaserdisc={this.onAddLaserdisc.bind(this)} />
+        {addLaserdiscs}
         <div style={laserdiscContainerStyle}>
           {reactLaserdiscs}
         </div>

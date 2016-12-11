@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { editListName, saveListName } from '../reducers/listState';
 
 import Header from '../components/Header';
-import ListName from '../components/ListName';
+import ListTitle from '../components/ListTitle';
+import ListInput from '../components/ListInput';
 import Footer from '../components/Footer';
 
 const appStyle = {
@@ -27,21 +28,31 @@ class PageWrapper extends Component {
 
   onNameSave(listName) {
     const {dispatch} = this.props;
-    dispatch(saveListName(dispatch, this.props.params.listId, listName));
+    const {listId} = this.props.params;
+    dispatch(saveListName(dispatch, listId, listName));
   }
 
   render() {
-    let listNameComponent = <div />
-    if (this.props.apiServer.list) {
-      listNameComponent = <ListName listName={this.props.apiServer.list.name}
-                onNameEdit={this.onNameEdit.bind(this)}
-                onNameSave={this.onNameSave.bind(this)}
-                editingList={this.props.listState.editingList} />
+    const {apiServer, listState} = this.props;
+    let listTitleComponent = <div />;
+    let listInputComponent = <div />;
+    if (apiServer.list !== undefined) {
+      listInputComponent = (
+        <ListInput  defaultValue={apiServer.list.name}
+                    saveAction={this.onNameSave.bind(this)}
+                    saveIcon='fa fa-floppy-o' />
+      );
+      listTitleComponent = (
+        <ListTitle  listName={apiServer.list.name}
+                    onTitleSelect={this.onNameEdit.bind(this)} />
+      );
     }
+
+
     return (
       <div style={appStyle}>
         <Header>
-          {listNameComponent}
+          {listState.editAction ? listInputComponent : listTitleComponent}
         </Header>
         <div style={bodyStyle}>
           {this.props.children}

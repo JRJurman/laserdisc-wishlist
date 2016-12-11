@@ -11,6 +11,10 @@ const inputStyle = {
   fontSize: '2.1em'
 }
 
+const buttonStyle = {
+  marginBottom: '13px'
+}
+
 export class AddLaserdiscs extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +32,7 @@ export class AddLaserdiscs extends Component {
   render() {
     if(this.props.addingLaserdisc) {
       return (
-        <div>
+        <div style={this.props.style}>
           <input  style={Object.assign({}, inputStyle, {width: '11em'})}
                   onChange={this.updateTitle.bind(this)}
                   type="text" placeholder="Title" />
@@ -36,15 +40,16 @@ export class AddLaserdiscs extends Component {
                   onChange={this.updateLDDBNumber.bind(this)}
                   type="text" placeholder="#LDDB" />
           <Button
+            disabled={this.state.lddbNumber.length < 5}
             onClick={this.props.onAddLaserdisc.bind(this, this.state.title, this.state.lddbNumber)}
-            style={this.props.style} bsStyle="success" bsSize="large">
+            style={buttonStyle} bsStyle="success" bsSize="large">
             Add LaserDisc
           </Button>
         </div>
       );
     }
     return (
-      <div>
+      <div style={this.props.style}>
         <Button
           onClick={this.props.onSelectAddLaserdisc}
           style={this.props.style} bsStyle="success" bsSize="large">
