@@ -42,7 +42,7 @@ export class AddLaserdiscs extends Component {
           <Button
             disabled={this.state.lddbNumber.length < 5}
             onClick={this.props.onAddLaserdisc.bind(this, this.state.title, this.state.lddbNumber)}
-            style={buttonStyle} bsStyle="success" bsSize="large">
+            style={buttonStyle} bsStyle="danger" bsSize="large">
             Add LaserDisc
           </Button>
         </div>
@@ -52,13 +52,13 @@ export class AddLaserdiscs extends Component {
       <div style={this.props.style}>
         <Button
           onClick={this.props.onSelectAddLaserdisc}
-          style={this.props.style} bsStyle="success" bsSize="large">
+          style={this.props.style} bsStyle="danger" bsSize="large">
           Add a LaserDisc
         </Button>
         <span style={textStyle}>or</span>
         <Button
-          disabled={true}
-          style={this.props.style} bsStyle="info" bsSize="large">
+          onClick={this.props.onSelectLDDBList}
+          style={this.props.style} bsStyle="danger" bsSize="large">
           Import an LDDB List
         </Button>
       </div>

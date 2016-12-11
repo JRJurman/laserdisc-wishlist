@@ -9,6 +9,7 @@ const LIST_DATA = "LIST_DATA";
 const RENAME_LIST = "RENAME_LIST";
 const ADD_LASERDISC = "ADD_LASERDISC";
 const REMOVE_LASERDISC = "REMOVE_LASERDISC";
+const IMPORT_LDDB_LIST = "IMPORT_LDDB_LIST";
 
 /* action creators */
 export function createNewList(dispatch) {
@@ -109,6 +110,26 @@ export function removeLaserdisc(dispatch, listId, title, lddbNumber) {
     });
   return {
     type: REMOVE_LASERDISC
+  };
+}
+
+export function importLDDBList(dispatch, listId, laserdiscs) {
+  fetch(`http://localhost:8000/lists/${listId}/importLDDBList`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({laserdiscs})
+  })
+    .then(function(res) {
+      return res.text()
+    })
+    .then(function(list) {
+      dispatch(listData(JSON.parse(list)));
+    });
+  return {
+    type: IMPORT_LDDB_LIST
   };
 }
 

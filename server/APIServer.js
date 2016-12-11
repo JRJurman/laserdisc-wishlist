@@ -71,6 +71,16 @@ function startExpress(dbclient, host) {
     } );
   });
 
+  app.post('/lists/:listId/importLDDBList', (req, res) => {
+    const ldStrings = req.body.laserdiscs.map(ld => {
+      return `${ld.ID}: ${ld.Title}`;
+    });
+    dbclient.importLDDBList( req.params.listId, ldStrings, (err, reply) => {
+      if (err) {console.error(chalk.bold.red(err))}
+      getListFromDB(req.params.listId, res);
+    } );
+  });
+
   app.listen(8000, () => {
     console.log(chalk.bold.blue('Express Server listening on port 8000!'));
   });

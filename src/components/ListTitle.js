@@ -41,7 +41,7 @@ class ListTitle extends Component {
         </span>
         <Button style={rightButtonStyle}
                 disabled={this.props.disabled}
-                bsStyle="success"
+                bsStyle="danger"
                 bsSize="large"
                 onClick={this.props.onTitleSelect}>
           <i className="fa fa-pencil" aria-hidden="true" />

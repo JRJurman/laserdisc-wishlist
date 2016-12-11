@@ -45,7 +45,7 @@ class RedisClient {
   }
 
   /* addLaserdisc(string listId, string laserdisc, function callback)
-    adds laserdisc string to list, should be in the format: 'REF: NAME'
+    adds laserdisc string to list, should be in the format: 'ID: NAME'
     callback is a function that takes in the final length of the list
   */
   addLaserdisc(listId, laserdisc, callback) {
@@ -58,6 +58,17 @@ class RedisClient {
   */
   removeLaserdisc(listId, laserdisc, callback) {
     this.dbclient.lrem(listId, 0, laserdisc, callback);
+  }
+
+  /* importLDDBList(string listId, list laserdiscs, function callback)
+    adds list of laserdisc strings, should be in the format: 'ID: NAME'
+    callback is a function that takes in the final length of the list
+  */
+  importLDDBList(listId, laserdiscs, callback) {
+    laserdiscs.reduce((dbclientBulkPush, ldString) => {
+      // keep pushing the ldString, and then execute
+      return dbclientBulkPush.rpushx(listId, ldString);
+    }, this.dbclient.multi()).exec(callback);
   }
 
 }
