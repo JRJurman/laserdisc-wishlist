@@ -46,7 +46,7 @@ class ListInput extends Component {
           placeholder={this.props.placeholder}
           onChange={this.updateInputValue.bind(this)} />
         <Button style={rightButtonStyle}
-                bsStyle="success"
+                bsStyle="warning"
                 bsSize="large"
                 onClick={this.props.saveAction.bind(this, this.state.value)}>
           <i className={this.props.saveIcon} aria-hidden="true" />
