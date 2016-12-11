@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Panel, Button } from 'react-bootstrap';
 
+import notFoundImage from '../assets/turtle.jpg';
+
 const laserdiscPanelStyle = {
   width: '250px',
   marginBottom: '0px',
@@ -34,6 +36,11 @@ export class Laserdisc extends Component {
     window.open(lddbPage,'mywindow');
   }
 
+  onImageNotFound({target}) {
+    target.src = notFoundImage;
+    target.style.opacity = 0.5;
+  }
+
   render() {
     const {lddbNumber, title} = this.props;
 
@@ -59,7 +66,8 @@ export class Laserdisc extends Component {
               target="_blank">
             <img  src={thumbPage}
                   alt={`http://www.lddb.com/laserdisc/${this.props.lddbNumber}/`}
-                  style={laserdiscCoverStyle}/>
+                  style={laserdiscCoverStyle}
+                  onError={this.onImageNotFound} />
           </a>
         </Panel>
         <Button bsStyle="danger" style={removeButtonStyle}
