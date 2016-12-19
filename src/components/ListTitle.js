@@ -16,14 +16,14 @@ const listTitleStyle = {
   lineHeight: '1.1',
   color: 'inherit',
   paddingRight: '0.4em',
-  paddingTop: '4px',
   cursor: 'pointer'
 };
 
 const containerStyle = {
   display: 'flex',
   overflow: 'visible',
-  marginTop: '17px'
+  marginTop: '17px',
+  alignItems: 'center'
 }
 
 class ListTitle extends Component {

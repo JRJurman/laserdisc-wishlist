@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import {  fetchList, removeLaserdisc,
+import {  fetchList, removeLaserDisc,
           importLDDBList } from '../reducers/apiServer';
-import { addingLaserdisc, finishAddingLaserdisc } from '../reducers/listState';
+import {  enterLaserDisc, openShareModal,
+          openAddModal, closeModal } from '../reducers/listState';
 
-import Laserdisc from '../components/Laserdisc';
-import EmptyLaserdisc from '../components/EmptyLaserdisc';
-import AddLaserdiscs from '../components/AddLaserdiscs';
+import LaserDisc from '../components/LaserDisc';
+import EmptyLaserDisc from '../components/EmptyLaserDisc';
+import ListOptions from '../components/ListOptions';
+import AddModal from '../components/AddModal';
+import ShareModal from '../components/ShareModal';
 
-const laserdiscContainerStyle = {
+const laserDiscContainerStyle = {
   display: 'flex',
   justifyContent: 'center',
   flexWrap: 'wrap'
@@ -21,20 +24,20 @@ class List extends Component {
     dispatch(fetchList(dispatch, this.props.params.listId));
   }
 
-  onSelectAddLaserdisc() {
-    this.props.dispatch(addingLaserdisc());
+  onSelectAddLaserDisc() {
+    this.props.dispatch(openAddModal());
   }
 
-  onAddLaserdisc(title, lddbNumber) {
+  onEnterLaserDisc(title, lddbNumber) {
     const {dispatch} = this.props;
     const {listId} = this.props.params;
-    dispatch(finishAddingLaserdisc(dispatch, listId, title, lddbNumber));
+    dispatch(enterLaserDisc(dispatch, listId, title, lddbNumber));
   }
 
-  onRemoveLaserdisc(title, lddbNumber) {
+  onRemoveLaserDisc(title, lddbNumber) {
     const {dispatch} = this.props;
     const {listId} = this.props.params;
-    dispatch(removeLaserdisc(dispatch, listId, title, lddbNumber));
+    dispatch(removeLaserDisc(dispatch, listId, title, lddbNumber));
   }
 
   onSelectLDDBList() {
@@ -51,19 +54,35 @@ class List extends Component {
         const lddbLines = event.target.result.trim().split('\n');
         // get the headers first
         const lddbHeaders = lddbLines[0].split('\t');
-        // generate laserdisc objects to add
-        const laserdiscs = lddbLines.slice(1).map(line => {
-          return line.split('\t').reduce((laserdisc, field, index) => {
-            const ldCopy = Object.assign({}, laserdisc);
+        // generate laserDisc objects to add
+        const laserDiscs = lddbLines.slice(1).map(line => {
+          return line.split('\t').reduce((laserDisc, field, index) => {
+            const ldCopy = Object.assign({}, laserDisc);
             ldCopy[lddbHeaders[index]] = field;
             return ldCopy;
           }, {});
         });
-        dispatch(importLDDBList(dispatch, listId, laserdiscs));
+        dispatch(importLDDBList(dispatch, listId, laserDiscs));
       };
       reader.readAsText(lddbFile);
     });
     filePicker.click();
+  }
+
+  onSelectShare() {
+    const {dispatch} = this.props;
+    dispatch(openShareModal());
+  }
+
+  onCloseModal() {
+    const {dispatch} = this.props;
+    dispatch(closeModal());
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.apiServer.list) {
+      document.title = `${nextProps.apiServer.list.name} on My LaserDisc`
+    }
   }
 
   render() {
@@ -72,36 +91,48 @@ class List extends Component {
       return (<div/>);
     }
 
-    const laserdiscList = this.props.apiServer.list.laserdiscs;
+    const laserDiscList = this.props.apiServer.list.laserDiscs;
 
-    const reactLaserdiscs = laserdiscList.map( ld => {
-      return (<Laserdisc  key={ld.lddbNumber}
+    const reactLaserDiscs = laserDiscList.map( ld => {
+      return (<LaserDisc  key={ld.lddbNumber}
                           title={ld.title}
                           lddbNumber={ld.lddbNumber}
-                          onRemove={this.onRemoveLaserdisc.bind(this, ld.title, ld.lddbNumber)} />
+                          onRemove={this.onRemoveLaserDisc.bind(this, ld.title, ld.lddbNumber)} />
       );
     });
 
     // buffer object to left align and keep things centered
-    if (reactLaserdiscs.length > 3) {
-      reactLaserdiscs.push(<EmptyLaserdisc key='empty-a'/>);
-      reactLaserdiscs.push(<EmptyLaserdisc key='empty-b'/>);
-      reactLaserdiscs.push(<EmptyLaserdisc key='empty-c'/>);
+    if (reactLaserDiscs.length > 3) {
+      reactLaserDiscs.push(<EmptyLaserDisc key='empty-a'/>);
+      reactLaserDiscs.push(<EmptyLaserDisc key='empty-b'/>);
+      reactLaserDiscs.push(<EmptyLaserDisc key='empty-c'/>);
     }
 
-    const addLaserdiscs = this.props.apiServer.list.locked ? (<div />) : (
-      <AddLaserdiscs  addingLaserdisc={this.props.listState.addingLaserdisc}
-                      onSelectAddLaserdisc={this.onSelectAddLaserdisc.bind(this)}
-                      onAddLaserdisc={this.onAddLaserdisc.bind(this)}
-                      onSelectLDDBList={this.onSelectLDDBList.bind(this)} />
-    );
+    const modalComponent = (() => {
+      switch(this.props.listState.modal) {
+        case 'add':
+          return (<AddModal
+                            show={true}
+                            onEnterLaserDisc={this.onEnterLaserDisc.bind(this)}
+                            closeModal={this.onCloseModal.bind(this)} />);
+        case 'share':
+          return (<ShareModal
+                            show={true}
+                            closeModal={this.onCloseModal.bind(this)} />);
+        default:
+          return (<div />);
+      }
+    })()
 
     return (
       <div>
-        {addLaserdiscs}
-        <div style={laserdiscContainerStyle}>
-          {reactLaserdiscs}
+        <ListOptions  onSelectAddLaserDisc={this.onSelectAddLaserDisc.bind(this)}
+                      onSelectLDDBList={this.onSelectLDDBList.bind(this)}
+                      onSelectShare={this.onSelectShare.bind(this)} />
+        <div style={laserDiscContainerStyle}>
+          {reactLaserDiscs}
         </div>
+        {modalComponent}
       </div>
     );
   }

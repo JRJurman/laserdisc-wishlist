@@ -73,8 +73,8 @@ export function renameList(dispatch, listId, listName) {
   };
 }
 
-export function addLaserdisc(dispatch, listId, title, lddbNumber) {
-  fetch(`http://localhost:8000/lists/${listId}/addLaserdisc`, {
+export function addLaserDisc(dispatch, listId, title, lddbNumber) {
+  fetch(`http://localhost:8000/lists/${listId}/addLaserDisc`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -93,8 +93,8 @@ export function addLaserdisc(dispatch, listId, title, lddbNumber) {
   };
 }
 
-export function removeLaserdisc(dispatch, listId, title, lddbNumber) {
-  fetch(`http://localhost:8000/lists/${listId}/removeLaserdisc`, {
+export function removeLaserDisc(dispatch, listId, title, lddbNumber) {
+  fetch(`http://localhost:8000/lists/${listId}/removeLaserDisc`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -113,14 +113,14 @@ export function removeLaserdisc(dispatch, listId, title, lddbNumber) {
   };
 }
 
-export function importLDDBList(dispatch, listId, laserdiscs) {
+export function importLDDBList(dispatch, listId, laserDiscs) {
   fetch(`http://localhost:8000/lists/${listId}/importLDDBList`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({laserdiscs})
+    body: JSON.stringify({laserDiscs})
   })
     .then(function(res) {
       return res.text()

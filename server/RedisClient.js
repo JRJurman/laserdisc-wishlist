@@ -44,28 +44,28 @@ class RedisClient {
     this.dbclient.lset(listId, 0, newName, callback);
   }
 
-  /* addLaserdisc(string listId, string laserdisc, function callback)
-    adds laserdisc string to list, should be in the format: 'ID: NAME'
+  /* addLaserDisc(string listId, string laserDisc, function callback)
+    adds laserDisc string to list, should be in the format: 'ID: NAME'
     callback is a function that takes in the final length of the list
   */
-  addLaserdisc(listId, laserdisc, callback) {
-    this.dbclient.rpushx(listId, laserdisc, callback);
+  addLaserDisc(listId, laserDisc, callback) {
+    this.dbclient.rpushx(listId, laserDisc, callback);
   }
 
-  /* removeLaserdisc(string listId, string laserdisc, function callback)
-    removes laserdisc string from list, should be in the format: 'REF: NAME'
+  /* removeLaserDisc(string listId, string laserDisc, function callback)
+    removes laserDisc string from list, should be in the format: 'REF: NAME'
     callback is a function that takes in the number of deleted elements
   */
-  removeLaserdisc(listId, laserdisc, callback) {
-    this.dbclient.lrem(listId, 0, laserdisc, callback);
+  removeLaserDisc(listId, laserDisc, callback) {
+    this.dbclient.lrem(listId, 0, laserDisc, callback);
   }
 
-  /* importLDDBList(string listId, list laserdiscs, function callback)
-    adds list of laserdisc strings, should be in the format: 'ID: NAME'
+  /* importLDDBList(string listId, list laserDiscs, function callback)
+    adds list of laserDisc strings, should be in the format: 'ID: NAME'
     callback is a function that takes in the final length of the list
   */
-  importLDDBList(listId, laserdiscs, callback) {
-    laserdiscs.reduce((dbclientBulkPush, ldString) => {
+  importLDDBList(listId, laserDiscs, callback) {
+    laserDiscs.reduce((dbclientBulkPush, ldString) => {
       // keep pushing the ldString, and then execute
       return dbclientBulkPush.rpushx(listId, ldString);
     }, this.dbclient.multi()).exec(callback);

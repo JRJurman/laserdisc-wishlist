@@ -5,7 +5,7 @@ const componentStyle = {
   margin: '1em'
 }
 
-export class EmptyLaserdisc extends Component {
+export class EmptyLaserDisc extends Component {
   render() {
     const style = Object.assign({}, componentStyle, this.props.style);
 
@@ -15,4 +15,4 @@ export class EmptyLaserdisc extends Component {
   }
 }
 
-export default EmptyLaserdisc;
+export default EmptyLaserDisc;

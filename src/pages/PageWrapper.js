@@ -7,6 +7,7 @@ import Header from '../components/Header';
 import ListTitle from '../components/ListTitle';
 import ListInput from '../components/ListInput';
 import Footer from '../components/Footer';
+import FacebookAuth from '../components/FacebookAuth';
 
 const appStyle = {
   textAlign: 'center',
@@ -48,9 +49,9 @@ class PageWrapper extends Component {
       );
     }
 
-
     return (
       <div style={appStyle}>
+        <FacebookAuth />
         <Header>
           {listState.editAction ? listInputComponent : listTitleComponent}
         </Header>

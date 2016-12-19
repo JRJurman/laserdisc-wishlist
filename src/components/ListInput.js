@@ -4,10 +4,13 @@ import { Button } from 'react-bootstrap';
 const inputStyle = {
   width: '14em',
   textAlign: 'right',
-  paddingRight: '0.4em',
+  fontWeight: 'bold',
+  lineHeight: '1.1',
   color: '#333333',
-  fontSize: '0.85em'
-};
+  paddingRight: '0.4em',
+  paddingTop: '4px',
+  border: '0px'
+}
 
 const buttonStyle = {
   padding: '0px 5px',
