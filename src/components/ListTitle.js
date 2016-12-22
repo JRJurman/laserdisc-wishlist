@@ -22,7 +22,6 @@ const listTitleStyle = {
 const containerStyle = {
   display: 'flex',
   overflow: 'visible',
-  marginTop: '17px',
   alignItems: 'center'
 }
 
@@ -34,7 +33,7 @@ class ListTitle extends Component {
     });
 
     return (
-      <div style={containerStyle}>
+      <span style={containerStyle}>
         <span style={titleStyle}
               onClick={this.props.onTitleSelect}>
           {this.props.listName}
@@ -46,7 +45,7 @@ class ListTitle extends Component {
                 onClick={this.props.onTitleSelect}>
           <i className="fa fa-pencil" aria-hidden="true" />
         </Button>
-      </div>
+      </span>
     );
   }
 }

@@ -5,6 +5,7 @@ import {  fetchList, removeLaserDisc,
           importLDDBList } from '../reducers/apiServer';
 import {  enterLaserDisc, openShareModal,
           openAddModal, closeModal } from '../reducers/listState';
+import {  login  } from '../reducers/facebookAPI';
 
 import LaserDisc from '../components/LaserDisc';
 import EmptyLaserDisc from '../components/EmptyLaserDisc';
@@ -79,6 +80,13 @@ class List extends Component {
     dispatch(closeModal());
   }
 
+  onFBLogin() {
+    const {dispatch, facebookAPI} = this.props;
+    if (facebookAPI.FB) {
+      dispatch(login(dispatch, facebookAPI.FB));
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.apiServer.list) {
       document.title = `${nextProps.apiServer.list.name} on My LaserDisc`
@@ -111,14 +119,21 @@ class List extends Component {
     const modalComponent = (() => {
       switch(this.props.listState.modal) {
         case 'add':
-          return (<AddModal
-                            show={true}
-                            onEnterLaserDisc={this.onEnterLaserDisc.bind(this)}
-                            closeModal={this.onCloseModal.bind(this)} />);
+          return (
+            <AddModal
+              show={true}
+              onEnterLaserDisc={this.onEnterLaserDisc.bind(this)}
+              closeModal={this.onCloseModal.bind(this)} />
+          );
         case 'share':
-          return (<ShareModal
-                            show={true}
-                            closeModal={this.onCloseModal.bind(this)} />);
+          return (
+            <ShareModal
+              show={true}
+              status={this.props.facebookAPI.status}
+              name={this.props.facebookAPI.name}
+              onFBLogin={this.onFBLogin.bind(this)}
+              closeModal={this.onCloseModal.bind(this)} />
+          );
         default:
           return (<div />);
       }
@@ -141,7 +156,8 @@ class List extends Component {
 function select(state) {
   return {
     apiServer: state.apiServer,
-    listState: state.listState
+    listState: state.listState,
+    facebookAPI: state.facebookAPI
   }
 }
 

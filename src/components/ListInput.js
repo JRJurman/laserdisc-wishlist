@@ -24,8 +24,7 @@ const rightButtonStyle = Object.assign({}, buttonStyle, {
 
 const containerStyle = {
   display: 'flex',
-  overflow: 'visible',
-  marginTop: '17px'
+  overflow: 'visible'
 }
 
 class ListInput extends Component {

@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { editListName, saveListName } from '../reducers/listState';
+import { initAPI, login, logout } from '../reducers/facebookAPI';
 
 import Header from '../components/Header';
 import ListTitle from '../components/ListTitle';
 import ListInput from '../components/ListInput';
 import Footer from '../components/Footer';
 import FacebookAuth from '../components/FacebookAuth';
+import FacebookLoginButton from '../components/FacebookLoginButton';
+import ProfileIcon from '../components/ProfileIcon';
 
 const appStyle = {
   textAlign: 'center',
@@ -33,8 +36,27 @@ class PageWrapper extends Component {
     dispatch(saveListName(dispatch, listId, listName));
   }
 
+  loadFacebookAPI(FB) {
+    const {dispatch} = this.props;
+    dispatch(initAPI(dispatch, FB));
+  }
+
+  onFBLogin() {
+    const {dispatch, facebookAPI} = this.props;
+    if (facebookAPI.FB) {
+      dispatch(login(dispatch, facebookAPI.FB));
+    }
+  }
+
+  onFBLogout() {
+    const {dispatch, facebookAPI} = this.props;
+    if (facebookAPI.FB) {
+      dispatch(logout(facebookAPI.FB));
+    }
+  }
+
   render() {
-    const {apiServer, listState} = this.props;
+    const {apiServer, listState, facebookAPI} = this.props;
     let listTitleComponent = <div />;
     let listInputComponent = <div />;
     if (apiServer.list !== undefined) {
@@ -49,11 +71,30 @@ class PageWrapper extends Component {
       );
     }
 
+    let facebookLogin = <div />;
+    if (facebookAPI.FB) {
+      if (!!facebookAPI.picture) {
+        facebookLogin = (
+          <ProfileIcon  src={facebookAPI.picture}
+                        name={facebookAPI.name}
+                        onFBLogout={this.onFBLogout.bind(this)} />
+        );
+      } else {
+        facebookLogin = (
+          <FacebookLoginButton
+              style={{marginLeft:'0.5em'}}
+              iconOnly={true}
+              onClick={this.onFBLogin.bind(this)} />
+        );
+      }
+    }
+
     return (
       <div style={appStyle}>
-        <FacebookAuth />
+        <FacebookAuth loadFacebookAPI={this.loadFacebookAPI.bind(this)} />
         <Header>
           {listState.editAction ? listInputComponent : listTitleComponent}
+          {facebookLogin}
         </Header>
         <div style={bodyStyle}>
           {this.props.children}
@@ -67,7 +108,8 @@ class PageWrapper extends Component {
 function select(state) {
   return {
     apiServer: state.apiServer,
-    listState: state.listState
+    listState: state.listState,
+    facebookAPI: state.facebookAPI
   }
 }
 

@@ -21,6 +21,12 @@ const linkStyle = {
   textDecoration: 'none'
 }
 
+const childrenStyle = {
+  display: 'flex',
+  marginTop: '17px',
+  alignItems: 'flex-end'
+}
+
 class Header extends Component {
 
   render() {
@@ -31,7 +37,9 @@ class Header extends Component {
         <div style={titleStyle}>
           <a style={linkStyle} href="/"><Logo /></a>
         </div>
-        {this.props.children}
+        <div style={childrenStyle}>
+          {this.props.children}
+        </div>
       </div>
     );
   }
