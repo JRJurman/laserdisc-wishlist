@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { createNewList } from '../reducers/apiServer';
 import { editListName, saveListName } from '../reducers/listState';
 import { initAPI, login, logout } from '../reducers/facebookAPI';
 
@@ -11,6 +12,7 @@ import Footer from '../components/Footer';
 import FacebookAuth from '../components/FacebookAuth';
 import FacebookLoginButton from '../components/FacebookLoginButton';
 import ProfileIcon from '../components/ProfileIcon';
+import NewList from '../components/NewList';
 
 const appStyle = {
   textAlign: 'center',
@@ -55,20 +57,33 @@ class PageWrapper extends Component {
     }
   }
 
+  onCreateNewList() {
+    const {dispatch} = this.props;
+    dispatch(createNewList(dispatch));
+  }
+
   render() {
     const {apiServer, listState, facebookAPI} = this.props;
-    let listTitleComponent = <div />;
-    let listInputComponent = <div />;
+    let headerAction = <div />
     if (apiServer.list !== undefined) {
-      listInputComponent = (
-        <ListInput  defaultValue={apiServer.list.name}
-                    saveAction={this.onNameSave.bind(this)}
-                    saveIcon='fa fa-floppy-o' />
-      );
-      listTitleComponent = (
-        <ListTitle  listName={apiServer.list.name}
-                    onTitleSelect={this.onNameEdit.bind(this)} />
-      );
+      if (listState.editAction) {
+        headerAction = (
+          <ListInput  defaultValue={apiServer.list.name}
+                      saveAction={this.onNameSave.bind(this)}
+                      saveIcon='fa fa-floppy-o' />
+        );
+      } else {
+        headerAction = (
+          <ListTitle  listName={apiServer.list.name}
+                      onTitleSelect={this.onNameEdit.bind(this)} />
+        );
+      }
+    } else {
+      headerAction = (
+        <NewList  style={{padding:'5px 10px'}}
+                  disabled={apiServer.creatingList}
+                  onCreateNewList={this.onCreateNewList.bind(this)}/>
+      )
     }
 
     let facebookLogin = <div />;
@@ -81,10 +96,9 @@ class PageWrapper extends Component {
         );
       } else {
         facebookLogin = (
-          <FacebookLoginButton
-              style={{marginLeft:'0.5em'}}
-              iconOnly={true}
-              onClick={this.onFBLogin.bind(this)} />
+          <FacebookLoginButton  style={{marginLeft:'0.5em'}}
+                                iconOnly={true}
+                                onClick={this.onFBLogin.bind(this)} />
         );
       }
     }
@@ -93,7 +107,7 @@ class PageWrapper extends Component {
       <div style={appStyle}>
         <FacebookAuth loadFacebookAPI={this.loadFacebookAPI.bind(this)} />
         <Header>
-          {listState.editAction ? listInputComponent : listTitleComponent}
+          {headerAction}
           {facebookLogin}
         </Header>
         <div style={bodyStyle}>
