@@ -8,12 +8,21 @@ const Redis = require('redis');
 const RedisClient = require('./RedisClient');
 const APIServer = require('./APIServer');
 
-const client = Redis.createClient();
+// generate proof for interacting with FacebookAuth
+const app_secret = require('./app_settings').secret;
+const crypto = require('crypto');
+const proof = function(token) {
+  return crypto.createHmac('sha256', app_secret).update(token).digest('hex');
+}
 
+// connect to Redis instance
+const client = Redis.createClient();
 client.on('connect', () => {
     console.log(chalk.bold.blue('Redis Client Connected'));
 });
-
-const staticHost = 'http://localhost:3000';
+// wrap Redis client with functions for the app
 const redisClient = new RedisClient(client);
-APIServer.startExpress(redisClient, staticHost);
+
+// start api server (that should expect connections from staticHost)
+const staticHost = 'http://localhost:3000';
+APIServer.startExpress(redisClient, staticHost, proof);

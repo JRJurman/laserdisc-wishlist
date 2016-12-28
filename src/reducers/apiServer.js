@@ -10,6 +10,8 @@ const RENAME_LIST = "RENAME_LIST";
 const ADD_LASERDISC = "ADD_LASERDISC";
 const REMOVE_LASERDISC = "REMOVE_LASERDISC";
 const IMPORT_LDDB_LIST = "IMPORT_LDDB_LIST";
+const CONNECT_USER = "CONNECT_USER";
+const DISCONNECT_USER = "DISCONNECT_USER";
 
 /* action creators */
 export function createNewList(dispatch) {
@@ -33,8 +35,8 @@ export function listCreated(listId) {
   };
 }
 
-export function fetchList(dispatch, listId) {
-  fetch(`http://localhost:8000/lists/${listId}`)
+export function fetchList(dispatch, listId, userId) {
+  fetch(`http://localhost:8000/lists/${listId}?userId=${userId}`)
     .then(function(res) {
       return res.text();
     })
@@ -47,18 +49,20 @@ export function fetchList(dispatch, listId) {
 }
 
 export function listData(list) {
+  if (list.err) {return}
   return {
     type: LIST_DATA,
     list: list
   };
 }
 
-export function renameList(dispatch, listId, listName) {
-  fetch(`http://localhost:8000/lists/${listId}/rename`, {
+export function renameList(dispatch, listId, listName, userId, token) {
+  fetch(`http://localhost:8000/lists/${listId}/rename?userId=${userId}`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Token': token
     },
     body: JSON.stringify({listName})
   })
@@ -73,12 +77,53 @@ export function renameList(dispatch, listId, listName) {
   };
 }
 
-export function addLaserDisc(dispatch, listId, title, lddbNumber) {
-  fetch(`http://localhost:8000/lists/${listId}/addLaserDisc`, {
+export function connectUser(dispatch, listId, userId, token) {
+  fetch(`http://localhost:8000/lists/${listId}/connectUser?userId=${userId}`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Token': token
+    }
+  })
+    .then(function(res) {
+      return res.text();
+    })
+    .then(function(list) {
+      dispatch(listData(JSON.parse(list)));
+    });
+  return {
+    type: CONNECT_USER
+  };
+}
+
+export function disconnectUser(dispatch, listId, userId, token) {
+  fetch(`http://localhost:8000/lists/${listId}/disconnectUser?userId=${userId}`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Token': token
+    }
+  })
+    .then(function(res) {
+      return res.text();
+    })
+    .then(function(list) {
+      dispatch(listData(JSON.parse(list)));
+    });
+  return {
+    type: DISCONNECT_USER
+  };
+}
+
+export function addLaserDisc(dispatch, listId, title, lddbNumber, userId, token) {
+  fetch(`http://localhost:8000/lists/${listId}/addLaserDisc?userId=${userId}`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Token': token
     },
     body: JSON.stringify({title, lddbNumber})
   })
@@ -93,12 +138,13 @@ export function addLaserDisc(dispatch, listId, title, lddbNumber) {
   };
 }
 
-export function removeLaserDisc(dispatch, listId, title, lddbNumber) {
-  fetch(`http://localhost:8000/lists/${listId}/removeLaserDisc`, {
+export function removeLaserDisc(dispatch, listId, title, lddbNumber, userId, token) {
+  fetch(`http://localhost:8000/lists/${listId}/removeLaserDisc?userId=${userId}`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Token': token
     },
     body: JSON.stringify({title, lddbNumber})
   })
@@ -113,12 +159,13 @@ export function removeLaserDisc(dispatch, listId, title, lddbNumber) {
   };
 }
 
-export function importLDDBList(dispatch, listId, laserDiscs) {
-  fetch(`http://localhost:8000/lists/${listId}/importLDDBList`, {
+export function importLDDBList(dispatch, listId, laserDiscs, userId, token) {
+  fetch(`http://localhost:8000/lists/${listId}/importLDDBList?userId=${userId}`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Token': token
     },
     body: JSON.stringify({laserDiscs})
   })

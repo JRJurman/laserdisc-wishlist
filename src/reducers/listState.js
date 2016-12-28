@@ -17,15 +17,15 @@ export function editListName() {
   };
 }
 
-export function saveListName(dispatch, listId, listName) {
-  dispatch(renameList(dispatch, listId, listName));
+export function saveListName(dispatch, listId, listName, userId, token) {
+  dispatch(renameList(dispatch, listId, listName, userId, token));
   return {
     type: SAVE_LIST_NAME
   };
 }
 
-export function enterLaserDisc(dispatch, listId, title, lddbNumber) {
-  dispatch(addLaserDisc(dispatch, listId, title, lddbNumber));
+export function enterLaserDisc(dispatch, listId, title, lddbNumber, userId, token) {
+  dispatch(addLaserDisc(dispatch, listId, title, lddbNumber, userId, token));
   return {
     type: ENTER_LASERDISC
   }

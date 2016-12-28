@@ -1,3 +1,5 @@
+import { fetchList } from './apiServer';
+
 /* action types */
 const INIT_API = "INIT_API";
 const USER_STATUS = "USER_STATUS";
@@ -7,11 +9,11 @@ const LOGOUT = "LOGOUT";
 const FETCH_USER_DATA = "FETCH_USER_DATA";
 
 /* action creators */
-export function initAPI(dispatch, FB) {
+export function initAPI(dispatch, FB, listId) {
   FB.getLoginStatus((authResponse) => {
     dispatch(userStatus(authResponse.status));
     if (authResponse.status === 'connected') {
-      dispatch(fetchUserData(dispatch, FB));
+      dispatch(fetchUserData(dispatch, FB, listId));
     }
   });
   return {
@@ -27,10 +29,11 @@ export function userStatus(status) {
   };
 }
 
-export function login(dispatch, FB) {
+export function login(dispatch, FB, listId) {
   FB.login((authResponse) => {
     if(authResponse) {
-      dispatch(fetchUserData(dispatch, FB));
+      dispatch(userStatus(authResponse.status));
+      dispatch(fetchUserData(dispatch, FB, listId));
     }
   });
   return {
@@ -38,19 +41,26 @@ export function login(dispatch, FB) {
   };
 }
 
-export function logout(FB) {
-  FB.logout();
+export function logout(dispatch, FB, listId) {
+  FB.logout(() => {
+    if (listId) {
+      dispatch(fetchList(dispatch, listId));
+    }
+  });
   return {
     type: LOGOUT
   };
 }
 
-export function fetchUserData(dispatch, FB) {
+export function fetchUserData(dispatch, FB, listId) {
   FB.api("/me?fields=id,name,picture{url}", (response) => {
     if (!response || response.error) { /* handle error */ }
     dispatch(userData(response.id,
                       response.name,
-                      response.picture.data.url))
+                      response.picture.data.url));
+    if (listId) {
+      dispatch(fetchList(dispatch, listId, response.id));
+    }
   });
   return {
     type: FETCH_USER_DATA

@@ -33,27 +33,35 @@ class PageWrapper extends Component {
   }
 
   onNameSave(listName) {
-    const {dispatch} = this.props;
+    const {dispatch, facebookAPI} = this.props;
     const {listId} = this.props.params;
-    dispatch(saveListName(dispatch, listId, listName));
+    let userId, token;
+    if (facebookAPI.FB) {
+      userId = facebookAPI.FB.getUserID();
+      token = facebookAPI.FB.getAccessToken();
+    }
+    dispatch(saveListName(dispatch, listId, listName, userId, token));
   }
 
   loadFacebookAPI(FB) {
     const {dispatch} = this.props;
-    dispatch(initAPI(dispatch, FB));
+    const {listId} = this.props.params;
+    dispatch(initAPI(dispatch, FB, listId));
   }
 
   onFBLogin() {
     const {dispatch, facebookAPI} = this.props;
+    const {listId} = this.props.params;
     if (facebookAPI.FB) {
-      dispatch(login(dispatch, facebookAPI.FB));
+      dispatch(login(dispatch, facebookAPI.FB, listId));
     }
   }
 
   onFBLogout() {
     const {dispatch, facebookAPI} = this.props;
+    const {listId} = this.props.params;
     if (facebookAPI.FB) {
-      dispatch(logout(facebookAPI.FB));
+      dispatch(logout(dispatch, facebookAPI.FB, listId));
     }
   }
 
@@ -75,6 +83,7 @@ class PageWrapper extends Component {
       } else {
         headerAction = (
           <ListTitle  listName={apiServer.list.name}
+                      access={apiServer.list.access}
                       onTitleSelect={this.onNameEdit.bind(this)} />
         );
       }

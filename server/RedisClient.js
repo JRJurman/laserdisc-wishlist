@@ -21,6 +21,7 @@ class RedisClient {
       this.dbclient.exists(newListId, (err, exists) => {
         if (!!exists) { throw `List with id:${newListId} already exists`; }
         this.dbclient.multi()
+                      .lpush(newListId, "")
                       .lpush(newListId, "Untitled List")
                       .exec(listCallback);
       });
@@ -36,12 +37,44 @@ class RedisClient {
     this.dbclient.lrange(listId, 0, -1, callback)
   }
 
+  /* getUserId(string listId, function callback)
+    returns the userId from the list
+    callback is a function that takes in a list
+  */
+  getUserId(listId, callback) {
+    this.dbclient.lrange(listId, 1, 1, callback)
+  }
+
   /* renameList(string listId, string newName, function callback)
     renames the list by setting the zeroth value
     callback is a function that takes in a simpleString (usually 'ok')
   */
   renameList(listId, newName, callback) {
     this.dbclient.lset(listId, 0, newName, callback);
+  }
+
+  /* connectUser(string listId, string userId, function callback)
+    associates the user to the list by setting the first value
+    callback is a function that takes in a simpleString (usually 'ok')
+  */
+  connectUser(listId, userId, callback) {
+    this.dbclient.lset(listId, 1, userId, callback);
+  }
+
+  /* disconnectUser(string listId, function callback)
+    unassociates the user to the list by clearing the first value
+    callback is a function that takes in a simpleString (usually 'ok')
+  */
+  disconnectUser(listId, callback) {
+    this.dbclient.lset(listId, 1, '', callback);
+  }
+
+  /* disconnectUser(string listId, string userId, function callback)
+    associates the user to the list by setting the first value
+    callback is a function that takes in a simpleString (usually 'ok')
+  */
+  disconnectUser(listId, callback) {
+    this.dbclient.lset(listId, 1, '', callback);
   }
 
   /* addLaserDisc(string listId, string laserDisc, function callback)

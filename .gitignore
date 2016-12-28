@@ -1,3 +1,6 @@
+# app secrets
+app_settings.json
+
 # dependencies
 node_modules
 

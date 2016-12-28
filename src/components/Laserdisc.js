@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Panel, Button } from 'react-bootstrap';
+import { Panel, Button, Label } from 'react-bootstrap';
 
 import notFoundImage from '../assets/turtle.jpg';
 
@@ -22,11 +22,16 @@ const laserDiscCoverStyle = {
 
 const removeButtonStyle = {
   width: '250px',
+  height: '40px',
   display: 'block',
   borderTopRightRadius: '0px',
   borderTopLeftRadius: '0px',
   borderBottomRightRadius: '10px',
   borderBottomLeftRadius: '10px'
+}
+
+const hiddenLabelStyle = {
+  color: '#d9534f'
 }
 
 const componentStyle = {
@@ -67,15 +72,28 @@ export class LaserDisc extends Component {
     }
 
     const style = Object.assign({}, componentStyle, this.props.style);
-    const finalPanelStyle = title ? (laserDiscPanelStyle) : (
-      Object.assign({}, laserDiscPanelStyle, hiddenPanelStyle)
-    );
-
+    const panelHeader = title ? (title) : (<span style={hiddenPanelStyle}>{lddbNumber}</span>);
+    let removeButton;
+    if (this.props.onRemove && this.props.access) {
+      removeButton = (
+        <Button bsStyle="danger" style={removeButtonStyle}
+                onClick={this.props.onRemove}>
+          Remove From List
+        </Button>
+      );
+    } else {
+      const labelStyle = Object.assign({}, removeButtonStyle, hiddenLabelStyle);
+      removeButton = (
+        <Label bsStyle="danger" style={labelStyle}>
+          {this.props.lddbNumber}
+        </Label>
+      );
+    }
     return (
       <div style={style}>
-        <Panel  header={title ? title : '_'}
+        <Panel  header={panelHeader}
                 bsStyle="warning"
-                style={finalPanelStyle}>
+                style={laserDiscPanelStyle}>
           <a  href={`http://www.lddb.com/laserdisc/${this.props.lddbNumber}/`}
               target="_blank">
             <img  src={thumbPage}
@@ -84,10 +102,7 @@ export class LaserDisc extends Component {
                   onError={this.onImageNotFound} />
           </a>
         </Panel>
-        <Button bsStyle="danger" style={removeButtonStyle}
-                onClick={this.props.onRemove}>
-          {this.props.onRemove ? 'Remove From List' : '_'}
-        </Button>
+        {removeButton}
       </div>
     );
   }

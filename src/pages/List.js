@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import {  fetchList, removeLaserDisc,
-          importLDDBList } from '../reducers/apiServer';
+import {  fetchList, removeLaserDisc, importLDDBList,
+          connectUser, disconnectUser } from '../reducers/apiServer';
 import {  enterLaserDisc, openShareModal,
           openAddModal, closeModal } from '../reducers/listState';
 import {  login  } from '../reducers/facebookAPI';
@@ -21,8 +21,14 @@ const laserDiscContainerStyle = {
 
 class List extends Component {
   componentDidMount() {
-    const {dispatch} = this.props;
-    dispatch(fetchList(dispatch, this.props.params.listId));
+    const {dispatch, facebookAPI} = this.props;
+    const {listId} = this.props.params;
+    let userId;
+    if (facebookAPI.FB) {
+      userId = facebookAPI.FB.getUserID();
+    }
+
+    dispatch(fetchList(dispatch, listId, userId));
   }
 
   onSelectAddLaserDisc() {
@@ -30,20 +36,38 @@ class List extends Component {
   }
 
   onEnterLaserDisc(title, lddbNumber) {
-    const {dispatch} = this.props;
+    const {dispatch, facebookAPI} = this.props;
     const {listId} = this.props.params;
-    dispatch(enterLaserDisc(dispatch, listId, title, lddbNumber));
+    let token, userId;
+    if (facebookAPI.FB) {
+      userId = facebookAPI.FB.getUserID();
+      token = facebookAPI.FB.getAccessToken();
+    }
+
+    dispatch(enterLaserDisc(dispatch, listId, title, lddbNumber, userId, token));
   }
 
   onRemoveLaserDisc(title, lddbNumber) {
-    const {dispatch} = this.props;
+    const {dispatch, facebookAPI} = this.props;
     const {listId} = this.props.params;
-    dispatch(removeLaserDisc(dispatch, listId, title, lddbNumber));
+    let token, userId;
+    if (facebookAPI.FB) {
+      userId = facebookAPI.FB.getUserID();
+      token = facebookAPI.FB.getAccessToken();
+    }
+
+    dispatch(removeLaserDisc(dispatch, listId, title, lddbNumber, userId, token));
   }
 
   onSelectLDDBList() {
-    const {dispatch} = this.props;
+    const {dispatch, facebookAPI} = this.props;
     const {listId} = this.props.params;
+    let token, userId;
+    if (facebookAPI.FB) {
+      userId = facebookAPI.FB.getUserID();
+      token = facebookAPI.FB.getAccessToken();
+    }
+
     const filePicker = document.createElement('input');
     filePicker.type = 'file';
     filePicker.accept=".csv"
@@ -63,7 +87,7 @@ class List extends Component {
             return ldCopy;
           }, {});
         });
-        dispatch(importLDDBList(dispatch, listId, laserDiscs));
+        dispatch(importLDDBList(dispatch, listId, laserDiscs, userId, token));
       };
       reader.readAsText(lddbFile);
     });
@@ -82,9 +106,34 @@ class List extends Component {
 
   onFBLogin() {
     const {dispatch, facebookAPI} = this.props;
+    const {listId} = this.props.params;
     if (facebookAPI.FB) {
-      dispatch(login(dispatch, facebookAPI.FB));
+      dispatch(login(dispatch, facebookAPI.FB, listId));
     }
+  }
+
+  onConnect() {
+    const {dispatch, facebookAPI} = this.props;
+    const {listId} = this.props.params;
+    let token, userId;
+    if (facebookAPI.FB) {
+      userId = facebookAPI.FB.getUserID();
+      token = facebookAPI.FB.getAccessToken();
+    }
+
+    dispatch(connectUser(dispatch, listId, userId, token));
+  }
+
+  onDisconnect() {
+    const {dispatch, facebookAPI} = this.props;
+    const {listId} = this.props.params;
+    let token, userId;
+    if (facebookAPI.FB) {
+      userId = facebookAPI.FB.getUserID();
+      token = facebookAPI.FB.getAccessToken();
+    }
+
+    dispatch(disconnectUser(dispatch, listId, userId, token));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -105,6 +154,7 @@ class List extends Component {
       return (<LaserDisc  key={ld.lddbNumber}
                           title={ld.title}
                           lddbNumber={ld.lddbNumber}
+                          access={this.props.apiServer.list.access}
                           onRemove={this.onRemoveLaserDisc.bind(this, ld.title, ld.lddbNumber)} />
       );
     });
@@ -129,7 +179,10 @@ class List extends Component {
           return (
             <ShareModal
               show={true}
+              onConnect={this.onConnect.bind(this)}
+              onDisconnect={this.onDisconnect.bind(this)}
               status={this.props.facebookAPI.status}
+              access={this.props.apiServer.list.access}
               name={this.props.facebookAPI.name}
               onFBLogin={this.onFBLogin.bind(this)}
               closeModal={this.onCloseModal.bind(this)} />
@@ -137,13 +190,22 @@ class List extends Component {
         default:
           return (<div />);
       }
-    })()
+    })();
+
+    let listOptions = <div />
+    if (this.props.apiServer.list.access) {
+      listOptions = (
+        <ListOptions
+          onSelectAddLaserDisc={this.onSelectAddLaserDisc.bind(this)}
+          onSelectLDDBList={this.onSelectLDDBList.bind(this)}
+          onSelectShare={this.onSelectShare.bind(this)}
+        />
+      );
+    }
 
     return (
       <div>
-        <ListOptions  onSelectAddLaserDisc={this.onSelectAddLaserDisc.bind(this)}
-                      onSelectLDDBList={this.onSelectLDDBList.bind(this)}
-                      onSelectShare={this.onSelectShare.bind(this)} />
+        {listOptions}
         <div style={laserDiscContainerStyle}>
           {reactLaserDiscs}
         </div>

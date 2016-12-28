@@ -14,3 +14,7 @@ html, body, #root {
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
 }
+
+.modal-content {
+  background-color: #f9f4f4;
+}

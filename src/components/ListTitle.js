@@ -15,8 +15,7 @@ const listTitleStyle = {
   fontWeight: 'bold',
   lineHeight: '1.1',
   color: 'inherit',
-  paddingRight: '0.4em',
-  cursor: 'pointer'
+  paddingRight: '0.4em'
 };
 
 const containerStyle = {
@@ -29,22 +28,30 @@ class ListTitle extends Component {
   render() {
 
     const titleStyle = Object.assign({}, listTitleStyle, {
-      cursor: (this.props.disabled ? 'default' : 'pointer')
+      cursor: (this.props.access ? 'pointer' : 'default')
     });
 
+    let onClick = (()=>{});
+    let editAction = <div style={{height:'39px'}} />
+    if (this.props.access) {
+      onClick = this.props.onTitleSelect;
+      editAction = (
+        <Button style={rightButtonStyle}
+              disabled={this.props.disabled}
+              bsStyle="danger"
+              bsSize="large"
+              onClick={onClick} >
+          <i className="fa fa-pencil" aria-hidden="true" />
+        </Button>
+      );
+    }
     return (
       <span style={containerStyle}>
         <span style={titleStyle}
-              onClick={this.props.onTitleSelect}>
+              onClick={onClick}>
           {this.props.listName}
         </span>
-        <Button style={rightButtonStyle}
-                disabled={this.props.disabled}
-                bsStyle="danger"
-                bsSize="large"
-                onClick={this.props.onTitleSelect}>
-          <i className="fa fa-pencil" aria-hidden="true" />
-        </Button>
+        {editAction}
       </span>
     );
   }
