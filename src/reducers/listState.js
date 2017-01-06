@@ -9,6 +9,8 @@ const OPEN_SHARE_MODAL = "OPEN_SHARE_MODAL";
 const OPEN_ADD_MODAL = "OPEN_ADD_MODAL";
 const CLOSE_MODAL = "CLOSE_MODAL";
 
+const RESIZE_WINDOW = "RESIZE_WINDOW";
+
 /* action creators */
 export function editListName() {
   return {
@@ -49,11 +51,19 @@ export function closeModal() {
   }
 }
 
+export function resizeWindow(width) {
+  return {
+    type: RESIZE_WINDOW,
+    size: Math.floor(width/200)
+  }
+}
+
 /* reducer */
 export default function listState(
     listState = {
       editAction: null,
-      modal: null
+      modal: null,
+      size: 3
     }, action
   ) {
   switch(action.type) {
@@ -69,6 +79,8 @@ export default function listState(
       return Object.assign({}, listState, {modal: 'add'});
     case CLOSE_MODAL:
       return Object.assign({}, listState, {modal: null});
+    case RESIZE_WINDOW:
+      return Object.assign({}, listState, {size: action.size});
     default:
       return listState;
   }

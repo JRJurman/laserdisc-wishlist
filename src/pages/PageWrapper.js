@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { createNewList } from '../reducers/apiServer';
-import { editListName, saveListName } from '../reducers/listState';
+import {  editListName, saveListName,
+          resizeWindow } from '../reducers/listState';
 import { initAPI, login, logout } from '../reducers/facebookAPI';
 
 import Header from '../components/Header';
@@ -26,6 +27,10 @@ const bodyStyle = {
 };
 
 class PageWrapper extends Component {
+
+  componentDidMount() {
+    window.addEventListener('resize', this.onResizeWindow.bind(this));
+  }
 
   onNameEdit() {
     const {dispatch} = this.props;
@@ -68,6 +73,11 @@ class PageWrapper extends Component {
   onCreateNewList() {
     const {dispatch} = this.props;
     dispatch(createNewList(dispatch));
+  }
+
+  onResizeWindow(event) {
+    const {dispatch} = this.props;
+    dispatch(resizeWindow(event.target.innerWidth));
   }
 
   render() {

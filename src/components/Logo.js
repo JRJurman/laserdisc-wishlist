@@ -27,10 +27,10 @@ class Logo extends Component {
     return (
       <div style={logoStyle}>
         <span style={firstStyleMerge}>
-          MY
+          TALLY
         </span>
         <span style={secondStyleMerge}>
-          LASERDISC
+          JACKET
         </span>
       </div>
     );

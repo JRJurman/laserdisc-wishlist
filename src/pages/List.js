@@ -138,23 +138,25 @@ class List extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.apiServer.list) {
-      document.title = `${nextProps.apiServer.list.name} on My LaserDisc`
+      document.title = `${nextProps.apiServer.list.name} on TallyJacket`
     }
   }
 
   render() {
-    if ((this.props.apiServer.list === undefined) ||
-        (this.props.apiServer.fetchingList !== false)) {
+    const {apiServer, listState, facebookAPI} = this.props;
+    if ((apiServer.list === undefined) ||
+        (apiServer.fetchingList !== false)) {
       return (<div/>);
     }
 
-    const laserDiscList = this.props.apiServer.list.laserDiscs;
+    const laserDiscList = apiServer.list.laserDiscs;
 
     const reactLaserDiscs = laserDiscList.map( ld => {
       return (<LaserDisc  key={ld.lddbNumber}
                           title={ld.title}
                           lddbNumber={ld.lddbNumber}
-                          access={this.props.apiServer.list.access}
+                          access={apiServer.list.access}
+                          size={listState.size}
                           onRemove={this.onRemoveLaserDisc.bind(this, ld.title, ld.lddbNumber)} />
       );
     });
@@ -181,9 +183,9 @@ class List extends Component {
               show={true}
               onConnect={this.onConnect.bind(this)}
               onDisconnect={this.onDisconnect.bind(this)}
-              status={this.props.facebookAPI.status}
-              access={this.props.apiServer.list.access}
-              name={this.props.facebookAPI.name}
+              status={facebookAPI.status}
+              access={apiServer.list.access}
+              name={facebookAPI.name}
               onFBLogin={this.onFBLogin.bind(this)}
               closeModal={this.onCloseModal.bind(this)} />
           );
@@ -193,9 +195,10 @@ class List extends Component {
     })();
 
     let listOptions = <div />
-    if (this.props.apiServer.list.access) {
+    if (apiServer.list.access) {
       listOptions = (
         <ListOptions
+          size={listState.size}
           onSelectAddLaserDisc={this.onSelectAddLaserDisc.bind(this)}
           onSelectLDDBList={this.onSelectLDDBList.bind(this)}
           onSelectShare={this.onSelectShare.bind(this)}

@@ -15,6 +15,10 @@ html, body, #root {
   border-bottom-left-radius: 0px;
 }
 
+.panel-body {
+  padding: 0px;
+}
+
 .modal-content {
   background-color: #f9f4f4;
 }

@@ -8,37 +8,20 @@ const hiddenPanelStyle = {
 }
 
 const laserDiscPanelStyle = {
-  width: '250px',
   marginBottom: '0px',
-  borderTopRightRadius: '10px',
-  borderTopLeftRadius: '10px',
-  borderBottomRightRadius: '0px',
-  borderBottomLeftRadius: '0px'
-}
-
-const laserDiscCoverStyle = {
-  cursor: 'pointer'
+  borderRadius: '10px 10px 0px 0px'
 }
 
 const removeButtonStyle = {
-  width: '250px',
+  width: '100%',
   height: '40px',
   display: 'block',
-  borderTopRightRadius: '0px',
-  borderTopLeftRadius: '0px',
-  borderBottomRightRadius: '10px',
-  borderBottomLeftRadius: '10px'
+  borderRadius: '0px 0px 10px 10px'
 }
 
 const hiddenLabelStyle = {
   color: '#d9534f'
 }
-
-const componentStyle = {
-  margin: '1em',
-  textAlign: 'center'
-}
-
 
 export class LaserDisc extends Component {
   onPanelSelect() {
@@ -54,6 +37,7 @@ export class LaserDisc extends Component {
   render() {
     const {lddbNumber, title} = this.props;
 
+    /* thumbnail logic */
     let thumbPage = notFoundImage;
     if (lddbNumber.length === 5) {
       // determine the LaserDisc shard that contains the thumbnail
@@ -68,8 +52,31 @@ export class LaserDisc extends Component {
       const lddbHighString = '0'.repeat( 5 - lddbHighValue.toString().length).concat(lddbHighValue.toString());
 
       thumbPage = `http://www.lddb.com/cover/ld/${lddbLowString}-${lddbHighString}/thumb/${lddbNumber}.jpg`;
-      // end thumbnail logic
     }
+    /* end thumbnail logic */
+
+    const laserDiscCoverStyle = {
+      cursor: 'pointer',
+      margin: '10px'
+    }
+    const componentStyle = {
+      textAlign: 'center'
+    }
+
+    if (this.props.size < 4) {
+      laserDiscCoverStyle.width = '130px';
+      componentStyle.width = '162px';
+      componentStyle.margin = '0.25em';
+    }
+    else if (this.props.size < 5) {
+      laserDiscCoverStyle.width = '165px';
+      componentStyle.width = '190px';
+      componentStyle.margin = '0.25em';
+    } else {
+      componentStyle.width = '232px';
+      componentStyle.margin = '0.5em';
+    }
+
 
     const style = Object.assign({}, componentStyle, this.props.style);
     const panelHeader = title ? (title) : (<span style={hiddenPanelStyle}>{lddbNumber}</span>);

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 
 const inputStyle = {
-  width: '14em',
+  maxWidth: '10em',
   textAlign: 'right',
   fontWeight: 'bold',
   lineHeight: '1.1',

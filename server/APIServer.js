@@ -50,13 +50,13 @@ function startExpress(dbclient, host, proof) {
 
   app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", host);
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Token");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, User, Token");
     next();
   });
 
   app.get('/', (req, res) => {
     res.send(`Hello! This is the API Server that connects the Static App
-      MyLaserDisc to the Database that powers the data.`);
+      TallyJacket to the Database that powers the data.`);
   });
 
   app.post('/newList', (req, res) => {
@@ -66,14 +66,14 @@ function startExpress(dbclient, host, proof) {
   });
 
   app.get('/lists/:listId/', (req, res) => {
-    getListFromDB(req.params.listId, req.query.userId, res);
+    getListFromDB(req.params.listId, req.header('User'), res);
   });
 
   app.post('/lists/:listId/rename', (req, res) => {
     verifyAccess(req.params.listId, req.header('Token'), res, () => {
       dbclient.renameList( req.params.listId, req.body.listName, (err, reply) => {
         if (err) {console.error(chalk.bold.red(err))}
-        getListFromDB(req.params.listId, req.query.userId, res);
+        getListFromDB(req.params.listId, req.header('User'), res);
       } );
     });
   });
@@ -82,7 +82,7 @@ function startExpress(dbclient, host, proof) {
     verifyAccess(req.params.listId, req.header('Token'), res, (userId) => {
       dbclient.connectUser( req.params.listId, userId, (err, reply) => {
         if (err) {console.error(chalk.bold.red(err))}
-        getListFromDB(req.params.listId, req.query.userId, res);
+        getListFromDB(req.params.listId, req.header('User'), res);
       } );
     });
   });
@@ -91,7 +91,7 @@ function startExpress(dbclient, host, proof) {
     verifyAccess(req.params.listId, req.header('Token'), res, (userId) => {
       dbclient.disconnectUser( req.params.listId, (err, reply) => {
         if (err) {console.error(chalk.bold.red(err))}
-        getListFromDB(req.params.listId, req.query.userId, res);
+        getListFromDB(req.params.listId, req.header('User'), res);
       } );
     });
   });
@@ -101,7 +101,7 @@ function startExpress(dbclient, host, proof) {
       const ldString = `${req.body.lddbNumber}: ${req.body.title}`;
       dbclient.addLaserDisc( req.params.listId, ldString, (err, reply) => {
         if (err) {console.error(chalk.bold.red(err))}
-        getListFromDB(req.params.listId, req.query.userId, res);
+        getListFromDB(req.params.listId, req.header('User'), res);
       } );
     });
   });
@@ -111,7 +111,7 @@ function startExpress(dbclient, host, proof) {
       const ldString = `${req.body.lddbNumber}: ${req.body.title}`;
       dbclient.removeLaserDisc( req.params.listId, ldString, (err, reply) => {
         if (err) {console.error(chalk.bold.red(err))}
-        getListFromDB(req.params.listId, req.query.userId, res);
+        getListFromDB(req.params.listId, req.header('User'), res);
       } );
     });
   });
@@ -124,7 +124,7 @@ function startExpress(dbclient, host, proof) {
 
       dbclient.importLDDBList( req.params.listId, ldStrings, (err, reply) => {
         if (err) {console.error(chalk.bold.red(err))}
-        getListFromDB(req.params.listId, req.query.userId, res);
+        getListFromDB(req.params.listId, req.header('User'), res);
       } );
     });
   });

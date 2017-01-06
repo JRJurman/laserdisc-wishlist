@@ -13,9 +13,11 @@ const IMPORT_LDDB_LIST = "IMPORT_LDDB_LIST";
 const CONNECT_USER = "CONNECT_USER";
 const DISCONNECT_USER = "DISCONNECT_USER";
 
+const apiHost = 'http://localhost:8000';
+
 /* action creators */
 export function createNewList(dispatch) {
-  fetch('http://localhost:8000/newList', {method: 'POST'})
+  fetch(`${apiHost}/newList`, {method: 'POST'})
     .then(function(res) {
       return res.text()
     })
@@ -36,7 +38,11 @@ export function listCreated(listId) {
 }
 
 export function fetchList(dispatch, listId, userId) {
-  fetch(`http://localhost:8000/lists/${listId}?userId=${userId}`)
+  fetch(`${apiHost}/lists/${listId}`, {
+    headers: {
+      'User': userId
+    },
+  })
     .then(function(res) {
       return res.text();
     })
@@ -57,11 +63,12 @@ export function listData(list) {
 }
 
 export function renameList(dispatch, listId, listName, userId, token) {
-  fetch(`http://localhost:8000/lists/${listId}/rename?userId=${userId}`, {
+  fetch(`${apiHost}/lists/${listId}/rename`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'User': userId,
       'Token': token
     },
     body: JSON.stringify({listName})
@@ -78,11 +85,12 @@ export function renameList(dispatch, listId, listName, userId, token) {
 }
 
 export function connectUser(dispatch, listId, userId, token) {
-  fetch(`http://localhost:8000/lists/${listId}/connectUser?userId=${userId}`, {
+  fetch(`${apiHost}/lists/${listId}/connectUser`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'User': userId,
       'Token': token
     }
   })
@@ -98,11 +106,12 @@ export function connectUser(dispatch, listId, userId, token) {
 }
 
 export function disconnectUser(dispatch, listId, userId, token) {
-  fetch(`http://localhost:8000/lists/${listId}/disconnectUser?userId=${userId}`, {
+  fetch(`${apiHost}/lists/${listId}/disconnectUser`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'User': userId,
       'Token': token
     }
   })
@@ -118,11 +127,12 @@ export function disconnectUser(dispatch, listId, userId, token) {
 }
 
 export function addLaserDisc(dispatch, listId, title, lddbNumber, userId, token) {
-  fetch(`http://localhost:8000/lists/${listId}/addLaserDisc?userId=${userId}`, {
+  fetch(`${apiHost}/lists/${listId}/addLaserDisc`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'User': userId,
       'Token': token
     },
     body: JSON.stringify({title, lddbNumber})
@@ -139,11 +149,12 @@ export function addLaserDisc(dispatch, listId, title, lddbNumber, userId, token)
 }
 
 export function removeLaserDisc(dispatch, listId, title, lddbNumber, userId, token) {
-  fetch(`http://localhost:8000/lists/${listId}/removeLaserDisc?userId=${userId}`, {
+  fetch(`${apiHost}/lists/${listId}/removeLaserDisc`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'User': userId,
       'Token': token
     },
     body: JSON.stringify({title, lddbNumber})
@@ -160,11 +171,12 @@ export function removeLaserDisc(dispatch, listId, title, lddbNumber, userId, tok
 }
 
 export function importLDDBList(dispatch, listId, laserDiscs, userId, token) {
-  fetch(`http://localhost:8000/lists/${listId}/importLDDBList?userId=${userId}`, {
+  fetch(`${apiHost}/lists/${listId}/importLDDBList`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'User': userId,
       'Token': token
     },
     body: JSON.stringify({laserDiscs})
