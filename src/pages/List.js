@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import {  fetchList, removeLaserDisc, importLDDBList,
           connectUser, disconnectUser } from '../reducers/apiServer';
-import {  enterLaserDisc, openShareModal,
+import {  enterLaserDisc, openShareModal, openImportModal,
           openAddModal, closeModal } from '../reducers/listState';
 import {  login  } from '../reducers/facebookAPI';
 
@@ -12,6 +12,7 @@ import EmptyLaserDisc from '../components/EmptyLaserDisc';
 import ListOptions from '../components/ListOptions';
 import AddModal from '../components/AddModal';
 import ShareModal from '../components/ShareModal';
+import ImportModal from '../components/ImportModal';
 
 const laserDiscContainerStyle = {
   display: 'flex',
@@ -60,6 +61,11 @@ class List extends Component {
   }
 
   onSelectLDDBList() {
+    const {dispatch} = this.props;
+    dispatch(openImportModal());
+  }
+
+  onImportLDDBList() {
     const {dispatch, facebookAPI} = this.props;
     const {listId} = this.props.params;
     let token, userId;
@@ -92,6 +98,7 @@ class List extends Component {
       reader.readAsText(lddbFile);
     });
     filePicker.click();
+    dispatch(closeModal());
   }
 
   onSelectShare() {
@@ -188,6 +195,13 @@ class List extends Component {
               access={apiServer.list.access}
               name={facebookAPI.name}
               onFBLogin={this.onFBLogin.bind(this)}
+              closeModal={this.onCloseModal.bind(this)} />
+          );
+        case 'import':
+          return (
+            <ImportModal
+              show={true}
+              onImportLDDBList={this.onImportLDDBList.bind(this)}
               closeModal={this.onCloseModal.bind(this)} />
           );
         default:

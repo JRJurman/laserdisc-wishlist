@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
-import { Button, Modal, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+import {  Button, Modal, FormGroup, ControlLabel, Tooltip,
+          FormControl, OverlayTrigger, Label } from 'react-bootstrap';
 
 import LaserDisc from './LaserDisc';
+
+import lddbNumberInstructions from '../assets/lddbNumber_instructions.png';
 
 const laserDiscContainerStyle = {
   display: 'flex',
   justifyContent: 'center'
+}
+
+const tooltipStyle = {
+  opacity: '1.0'
 }
 
 class AddModal extends Component {
@@ -23,6 +30,19 @@ class AddModal extends Component {
   }
 
   render() {
+    const tooltip = (
+      <Tooltip id="add-tooltip" style={tooltipStyle}>
+        <img  src={lddbNumberInstructions} alt="LDDB# under the image"
+              width="400px" />
+      </Tooltip>
+    );
+
+    const tooltipComponent = (
+      <OverlayTrigger placement="bottom" overlay={tooltip}>
+        <Label>?</Label>
+      </OverlayTrigger>
+    );
+
     return (
       <Modal show={this.props.show} onHide={this.props.closeModal}>
         <Modal.Header closeButton>
@@ -40,7 +60,7 @@ class AddModal extends Component {
           </FormGroup>
           <FormGroup  controlId="ldNumber"
                       validationState={this.state.lddbNumber.length === 5 ? 'success' : 'error'}>
-            <ControlLabel>LaserDisc Database Number (#LDDB)</ControlLabel>
+            <ControlLabel>LaserDisc Database Number (#LDDB) {tooltipComponent}</ControlLabel>
             <FormControl
               type="text"
               value={this.state.lddbNumber}

@@ -5,8 +5,9 @@ const EDIT_LIST_NAME = "EDIT_LIST_NAME";
 const SAVE_LIST_NAME = "SAVE_LIST_NAME";
 const ENTER_LASERDISC = "ENTER_LASERDISC";
 
-const OPEN_SHARE_MODAL = "OPEN_SHARE_MODAL";
 const OPEN_ADD_MODAL = "OPEN_ADD_MODAL";
+const OPEN_IMPORT_MODAL = "OPEN_IMPORT_MODAL";
+const OPEN_SHARE_MODAL = "OPEN_SHARE_MODAL";
 const CLOSE_MODAL = "CLOSE_MODAL";
 
 const RESIZE_WINDOW = "RESIZE_WINDOW";
@@ -36,6 +37,12 @@ export function enterLaserDisc(dispatch, listId, title, lddbNumber, userId, toke
 export function openAddModal() {
   return {
     type: OPEN_ADD_MODAL
+  }
+}
+
+export function openImportModal() {
+  return {
+    type: OPEN_IMPORT_MODAL
   }
 }
 
@@ -77,6 +84,8 @@ export default function listState(
       return Object.assign({}, listState, {modal: 'share'});
     case OPEN_ADD_MODAL:
       return Object.assign({}, listState, {modal: 'add'});
+    case OPEN_IMPORT_MODAL:
+      return Object.assign({}, listState, {modal: 'import'});
     case CLOSE_MODAL:
       return Object.assign({}, listState, {modal: null});
     case RESIZE_WINDOW:
