@@ -20,6 +20,10 @@ const laserDiscContainerStyle = {
   flexWrap: 'wrap'
 }
 
+const listOptionsStyle = {
+  padding: '1em'
+}
+
 class List extends Component {
   componentDidMount() {
     const {dispatch, facebookAPI} = this.props;
@@ -213,6 +217,7 @@ class List extends Component {
     if (apiServer.list.access) {
       listOptions = (
         <ListOptions
+          style={listOptionsStyle}
           size={listState.size}
           onSelectAddLaserDisc={this.onSelectAddLaserDisc.bind(this)}
           onSelectLDDBList={this.onSelectLDDBList.bind(this)}

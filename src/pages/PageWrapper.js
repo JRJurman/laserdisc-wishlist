@@ -15,6 +15,8 @@ import FacebookLoginButton from '../components/FacebookLoginButton';
 import ProfileIcon from '../components/ProfileIcon';
 import NewList from '../components/NewList';
 
+import noAccountIcon from '../assets/no_account_icon.png';
+
 const appStyle = {
   textAlign: 'center',
   display: 'flex',
@@ -117,9 +119,8 @@ class PageWrapper extends Component {
         );
       } else {
         facebookLogin = (
-          <FacebookLoginButton  style={{marginLeft:'0.5em'}}
-                                iconOnly={true}
-                                onClick={this.onFBLogin.bind(this)} />
+          <ProfileIcon  src={noAccountIcon}
+                        onFBLogin={this.onFBLogin.bind(this)} />
         );
       }
     }

@@ -28,8 +28,9 @@ export class ProfileIcon extends Component {
       <DropdownButton id='profileActions'
                       title={image} style={style}
                       noCaret pullRight>
-        <MenuItem header>Logged In as {this.props.name}</MenuItem>
-        <MenuItem onClick={this.props.onFBLogout}>Log Out</MenuItem>
+        {(this.props.name ? <MenuItem header>Logged In as {this.props.name}</MenuItem> : '')}
+        {(this.props.onFBLogin ? <MenuItem onClick={this.props.onFBLogin}>Log In with Facebook</MenuItem> : '')}
+        {(this.props.onFBLogout ? <MenuItem onClick={this.props.onFBLogout}>Log Out</MenuItem> : '')}
       </DropdownButton>
     );
   }
