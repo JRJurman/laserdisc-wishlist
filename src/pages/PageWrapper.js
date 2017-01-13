@@ -30,6 +30,8 @@ class PageWrapper extends Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.onResizeWindow.bind(this));
+    const {dispatch} = this.props;
+    dispatch(resizeWindow(window.innerWidth));
   }
 
   onNameEdit() {

@@ -21,7 +21,10 @@ const listTitleStyle = {
 const containerStyle = {
   display: 'flex',
   overflow: 'visible',
-  alignItems: 'center'
+  alignItems: 'center',
+  borderRadius: '10px',
+  border: '#d9534f solid 1px',
+  paddingLeft: '0.3em'
 }
 
 class ListTitle extends Component {

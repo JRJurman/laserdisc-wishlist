@@ -13,6 +13,20 @@ html, body, #root {
   border-radius: 6px;
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: white;
+}
+
+.panel-heading {
+  color: white;
+}
+
+.hover-panel:hover {
+  white-space: inherit;
+  overflow: inherit;
+  text-overflow: inherit;
 }
 
 .panel-body {

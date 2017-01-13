@@ -162,10 +162,11 @@ class List extends Component {
     });
 
     // buffer object to left align and keep things centered
-    if (reactLaserDiscs.length > 3) {
-      reactLaserDiscs.push(<EmptyLaserDisc key='empty-a'/>);
-      reactLaserDiscs.push(<EmptyLaserDisc key='empty-b'/>);
-      reactLaserDiscs.push(<EmptyLaserDisc key='empty-c'/>);
+    if (reactLaserDiscs.length > 4) {
+      reactLaserDiscs.push(<EmptyLaserDisc key='empty-a' size={listState.size} />);
+      reactLaserDiscs.push(<EmptyLaserDisc key='empty-b' size={listState.size} />);
+      reactLaserDiscs.push(<EmptyLaserDisc key='empty-c' size={listState.size} />);
+      reactLaserDiscs.push(<EmptyLaserDisc key='empty-d' size={listState.size} />);
     }
 
     const modalComponent = (() => {

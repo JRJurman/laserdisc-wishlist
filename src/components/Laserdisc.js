@@ -62,18 +62,24 @@ export class LaserDisc extends Component {
     const componentStyle = {
       textAlign: 'center'
     }
+    const hoverStyle = {
+      position: 'absolute'
+    }
 
     if (this.props.size < 4) {
       laserDiscCoverStyle.width = '130px';
       componentStyle.width = '162px';
+      hoverStyle.width = '162px';
       componentStyle.margin = '0.25em';
     }
     else if (this.props.size < 5) {
       laserDiscCoverStyle.width = '165px';
       componentStyle.width = '190px';
+      hoverStyle.width = '190px';
       componentStyle.margin = '0.25em';
     } else {
       componentStyle.width = '232px';
+      hoverStyle.width = '232px';
       componentStyle.margin = '0.5em';
     }
 
@@ -98,9 +104,10 @@ export class LaserDisc extends Component {
     }
     return (
       <div style={style}>
-        <Panel  header={panelHeader}
-                bsStyle="warning"
+        <Panel  bsStyle="warning"
                 style={laserDiscPanelStyle}>
+          <div className="hover-panel panel-heading label-warning" style={hoverStyle}>{panelHeader}</div>
+          <div className="panel-heading label-warning">{panelHeader}</div>
           <a  href={`http://www.lddb.com/laserdisc/${this.props.lddbNumber}/`}
               target="_blank">
             <img  src={thumbPage}
